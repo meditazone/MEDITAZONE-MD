@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">Meditazone</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_meditation">Meditation</string>
+    <string name="menu_profile">Profile</string>
+
+    <string name="home_image">Home Image</string>
+    <string name="meditation_image">Meditation Image Background</string>
+    
+    <string name="title_meditation">Meditation And Relaxation</string>
+    <string name="home_card_title">Mari Bermeditasi</string>
+    <string name="home_card_subtitle">Temukan Ketenangan Sesuai Perasaan Anda</string>
+    <string name="text_ask_emotion">Bagaimana Perasaan Anda ?</string>
+
+    <string name="title_article">Article</string>
+    //For Login and Register Text
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="title_login">Selamat Datang!</string>
+    <string name="subtitle_login">Masuk ke Akun Anda</string>
+    <string name="submit">Masuk</string>
+    <string name="ask_account">Belum punya akun ?</string>
+    <string name="ask_account2">Sudah punya akun ?</string>
+    <string name="register">Daftar</string>
+    <string name="title_register">Hai !</string>
+    <string name="subtitle_register">Buat akun anda</string>
+
+    //For Meditation Screen
+    <string name="category">Kategori</string>
+    <string name="recomend_text">Pilih, Dengarkan dan Temukan Ketenangan</string>
+    <string name="meditation_card_title1">Temukan Ketenangan
+    Melalui Meditasi</string>
+
+</resources>

@@ -29,6 +29,18 @@ fun ArticleSection(
 }
 
 @Composable
+fun QuoteSection(
+    title: String,
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit
+) {
+    Column {
+        SectionText(title = title, modifier)
+        content()
+    }
+}
+
+@Composable
 fun CategorySection(
     text1: String,
     text2: String,

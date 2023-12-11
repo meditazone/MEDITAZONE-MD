@@ -32,11 +32,14 @@ import androidx.compose.ui.unit.dp
 import com.waekaizo.meditazone.R
 import com.waekaizo.meditazone.model.FakeArticleData
 import com.waekaizo.meditazone.model.FakeMeditationData
+import com.waekaizo.meditazone.model.FakeQuoteData
 import com.waekaizo.meditazone.ui.components.ArticleRow
 import com.waekaizo.meditazone.ui.components.ArticleSection
 import com.waekaizo.meditazone.ui.components.CardHome
 import com.waekaizo.meditazone.ui.components.HomeSection
 import com.waekaizo.meditazone.ui.components.MeditationRow
+import com.waekaizo.meditazone.ui.components.QuoteRow
+import com.waekaizo.meditazone.ui.components.QuoteSection
 import com.waekaizo.meditazone.ui.theme.Grey
 import com.waekaizo.meditazone.ui.theme.MeditazoneTheme
 
@@ -121,6 +124,11 @@ fun HomeContent() {
         HomeSection(
             title = stringResource(id = R.string.title_meditation),
             content = { MeditationRow(listMeditation = FakeMeditationData.meditations)},
+            modifier = Modifier.padding(start = 8.dp)
+        )
+        QuoteSection(
+            title = stringResource(id = R.string.quote),
+            content = { QuoteRow(listQuote = FakeQuoteData.quotes) },
             modifier = Modifier.padding(start = 8.dp)
         )
         ArticleSection(

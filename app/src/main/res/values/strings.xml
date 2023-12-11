@@ -12,6 +12,7 @@
     <string name="home_card_title">Mari Bermeditasi</string>
     <string name="home_card_subtitle">Temukan Ketenangan Sesuai Perasaan Anda</string>
     <string name="text_ask_emotion">Bagaimana Perasaan Anda ?</string>
+    <string name="quote">Quotes</string>
 
     <string name="title_article">Article</string>
     //For Login and Register Text
@@ -33,5 +34,13 @@
     <string name="recomend_text">Pilih, Dengarkan dan Temukan Ketenangan</string>
     <string name="meditation_card_title1">Temukan Ketenangan
     Melalui Meditasi</string>
+
+    //For Search Screen
+    <string name="search_meditation">Mencari meditasi</string>
+    <string name="background_search">Background Image Search</string>
+    <string name="search">Pencarian</string>
+
+    //For General
+    <string name="button_close">Icon Close</string>
 
 </resources>

@@ -6,5 +6,6 @@ data class Meditation(
     val duration: String,
     val type: String,
     val photoUrl: String,
-    val bannerUrl: String
+    val bannerUrl: String,
+    val meditationImage: String
 )

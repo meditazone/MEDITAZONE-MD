@@ -42,5 +42,6 @@
 
     //For General
     <string name="button_close">Icon Close</string>
+    <string name="ask_emotion">Bagaimana Perasaan Anda Hari ini? Ceritakan disini</string>
 
 </resources>

@@ -8,7 +8,8 @@ object FakeMeditationData {
             duration = "15 Minute",
             type = "Meditation",
             photoUrl = "https://i.ibb.co/tqvjwx3/meditation-image-bg.png",
-            bannerUrl = "https://i.ibb.co/j59cXsX/meditation-image-example.png"
+            bannerUrl = "https://i.ibb.co/j59cXsX/meditation-image-example.png",
+            meditationImage = "https://i.ibb.co/wwqTCth/meditation-image.png"
         ),
         Meditation(
             id = "2",
@@ -16,7 +17,8 @@ object FakeMeditationData {
             duration = "10 Minute",
             type = "Meditation",
             photoUrl = "https://i.ibb.co/tqvjwx3/meditation-image-bg.png",
-            bannerUrl = "https://i.ibb.co/j59cXsX/meditation-image-example.png"
+            bannerUrl = "https://i.ibb.co/j59cXsX/meditation-image-example.png",
+            meditationImage = "https://i.ibb.co/wwqTCth/meditation-image.png"
         ),
         Meditation(
             id = "3",
@@ -24,7 +26,44 @@ object FakeMeditationData {
             duration = "8 Minute",
             type = "Meditation",
             photoUrl = "https://i.ibb.co/tqvjwx3/meditation-image-bg.png",
-            bannerUrl = "https://i.ibb.co/j59cXsX/meditation-image-example.png"
+            bannerUrl = "https://i.ibb.co/j59cXsX/meditation-image-example.png",
+            meditationImage = "https://i.ibb.co/wwqTCth/meditation-image.png"
+        ),
+        Meditation(
+            id = "4",
+            title = "Breath Awareness",
+            duration = "8 Minute",
+            type = "Meditation",
+            photoUrl = "https://i.ibb.co/tqvjwx3/meditation-image-bg.png",
+            bannerUrl = "https://i.ibb.co/j59cXsX/meditation-image-example.png",
+            meditationImage = "https://i.ibb.co/wwqTCth/meditation-image.png"
+        ),
+        Meditation(
+            id = "5",
+            title = "Breath Awareness",
+            duration = "8 Minute",
+            type = "Meditation",
+            photoUrl = "https://i.ibb.co/tqvjwx3/meditation-image-bg.png",
+            bannerUrl = "https://i.ibb.co/j59cXsX/meditation-image-example.png",
+            meditationImage = "https://i.ibb.co/wwqTCth/meditation-image.png"
+        ),
+        Meditation(
+            id = "6",
+            title = "Breath Awareness",
+            duration = "8 Minute",
+            type = "Meditation",
+            photoUrl = "https://i.ibb.co/tqvjwx3/meditation-image-bg.png",
+            bannerUrl = "https://i.ibb.co/j59cXsX/meditation-image-example.png",
+            meditationImage = "https://i.ibb.co/wwqTCth/meditation-image.png"
+        ),
+        Meditation(
+            id = "7",
+            title = "Breath Awareness",
+            duration = "8 Minute",
+            type = "Meditation",
+            photoUrl = "https://i.ibb.co/tqvjwx3/meditation-image-bg.png",
+            bannerUrl = "https://i.ibb.co/j59cXsX/meditation-image-example.png",
+            meditationImage = "https://i.ibb.co/wwqTCth/meditation-image.png"
         )
     )
 }

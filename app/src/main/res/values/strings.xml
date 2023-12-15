@@ -43,5 +43,22 @@
     //For General
     <string name="button_close">Icon Close</string>
     <string name="ask_emotion">Bagaimana Perasaan Anda Hari ini? Ceritakan disini</string>
+    <string name="desc_image_error">Error Image</string>
+    <string name="error_message">Mohon Maaf, Input Tidak Dikenali</string>
+    <string name="error_message_desc">Kami tidak dapat memahami sepenuhnya perasaan yang Anda ungkapkan.
+        Mohon pastikan bahwa input Anda jelas dan berhubungan dengan ekspresi perasaan.
+        Kami terus melakukan pelatihan untuk memahami lebih banyak perasaan, namun saat ini terdapat batasan dalam interpretasi
+        input berdasarkan pelatihan data kami.</string>
+    <string name="favorite">Tambah ke favorite</string>
+    <string name="share">Bagikan</string>
+    <string name="favorite_word">Favorite</string>
+    <string name="input_name">Masukan nama anda</string>
+    <string name="theme">Theme</string>
+
+    /For Favorite
+    <string name="your_favorite">Favorit Kamu</string>
+    <string name="favorite_meditation">Meditasi Favorit</string>
+    <string name="favorite_quote">Quotes Favorit</string>
+    <string name="favorite_artickle">Artikel Favorite</string>
 
 </resources>

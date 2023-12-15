@@ -56,7 +56,8 @@ fun InputMLScreen(
                 .padding(vertical = 16.dp),
             label = {
                 Text(text = stringResource(id = R.string.ask_emotion))
-            }
+            },
+            shape = RoundedCornerShape(16.dp)
         )
         IconButton(
             onClick = { /*TODO*/ },

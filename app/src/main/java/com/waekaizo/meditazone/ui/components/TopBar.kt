@@ -22,7 +22,8 @@ import com.waekaizo.meditazone.ui.theme.MeditazoneTheme
 
 @Composable
 fun TopBarCategory(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onBackClick: () -> Unit
 ) {
     Row(
         modifier = modifier
@@ -31,7 +32,7 @@ fun TopBarCategory(
             .background(Color.Transparent),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        IconButton(onClick = {}) {
+        IconButton(onClick = onBackClick) {
             Icon(
                 imageVector = Icons.Default.KeyboardArrowLeft,
                 contentDescription = null,
@@ -59,6 +60,8 @@ fun TopBarCategory(
 @Composable
 fun TopBarCategoryPreview() {
     MeditazoneTheme {
-        TopBarCategory()
+        TopBarCategory(
+            onBackClick = {}
+        )
     }
 }

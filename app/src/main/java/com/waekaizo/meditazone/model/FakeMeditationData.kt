@@ -1,69 +1,43 @@
 package com.waekaizo.meditazone.model
 
+import com.waekaizo.meditazone.data.response.DataItem
+
+
 object FakeMeditationData {
     val meditations = listOf(
-        Meditation(
-            id = "1",
+        DataItem(
+            meditationID = 1,
             title = "Loving-Kindness",
             duration = "15 Minute",
             type = "Meditation",
-            photoUrl = "https://i.ibb.co/tqvjwx3/meditation-image-bg.png",
-            bannerUrl = "https://i.ibb.co/j59cXsX/meditation-image-example.png",
-            meditationImage = "https://i.ibb.co/wwqTCth/meditation-image.png"
+            category = "Loving-Kindness",
+            backgroundCard = "https://i.ibb.co/tqvjwx3/meditation-image-bg.png",
+            thumbnail = "https://i.ibb.co/Zh3G8fX/player-bg.png",
+            backgroundMediaPlayer = "https://i.ibb.co/wwqTCth/meditation-image.png",
+            audioURL = ""
         ),
-        Meditation(
-            id = "2",
-            title = "Mindfullness",
+        DataItem(
+            meditationID = 2,
+            title = "Mindfullness asui",
             duration = "10 Minute",
             type = "Meditation",
-            photoUrl = "https://i.ibb.co/tqvjwx3/meditation-image-bg.png",
-            bannerUrl = "https://i.ibb.co/j59cXsX/meditation-image-example.png",
-            meditationImage = "https://i.ibb.co/wwqTCth/meditation-image.png"
+            category = "Mindfulness",
+            backgroundCard = "https://i.ibb.co/tqvjwx3/meditation-image-bg.png",
+            thumbnail = "https://i.ibb.co/Zh3G8fX/player-bg.png",
+            backgroundMediaPlayer = "https://i.ibb.co/wwqTCth/meditation-image.png",
+            audioURL = ""
         ),
-        Meditation(
-            id = "3",
-            title = "Breath Awareness",
+        DataItem(
+            meditationID = 3,
+            title = "Teknik Pernapasan Air",
             duration = "8 Minute",
             type = "Meditation",
-            photoUrl = "https://i.ibb.co/tqvjwx3/meditation-image-bg.png",
-            bannerUrl = "https://i.ibb.co/j59cXsX/meditation-image-example.png",
-            meditationImage = "https://i.ibb.co/wwqTCth/meditation-image.png"
+            category = "Breath Awareness",
+            backgroundCard = "https://i.ibb.co/tqvjwx3/meditation-image-bg.png",
+            thumbnail = "https://i.ibb.co/Zh3G8fX/player-bg.png",
+            backgroundMediaPlayer = "https://i.ibb.co/wwqTCth/meditation-image.png",
+            audioURL = ""
         ),
-        Meditation(
-            id = "4",
-            title = "Breath Awareness",
-            duration = "8 Minute",
-            type = "Meditation",
-            photoUrl = "https://i.ibb.co/tqvjwx3/meditation-image-bg.png",
-            bannerUrl = "https://i.ibb.co/j59cXsX/meditation-image-example.png",
-            meditationImage = "https://i.ibb.co/wwqTCth/meditation-image.png"
-        ),
-        Meditation(
-            id = "5",
-            title = "Breath Awareness",
-            duration = "8 Minute",
-            type = "Meditation",
-            photoUrl = "https://i.ibb.co/tqvjwx3/meditation-image-bg.png",
-            bannerUrl = "https://i.ibb.co/j59cXsX/meditation-image-example.png",
-            meditationImage = "https://i.ibb.co/wwqTCth/meditation-image.png"
-        ),
-        Meditation(
-            id = "6",
-            title = "Breath Awareness",
-            duration = "8 Minute",
-            type = "Meditation",
-            photoUrl = "https://i.ibb.co/tqvjwx3/meditation-image-bg.png",
-            bannerUrl = "https://i.ibb.co/j59cXsX/meditation-image-example.png",
-            meditationImage = "https://i.ibb.co/wwqTCth/meditation-image.png"
-        ),
-        Meditation(
-            id = "7",
-            title = "Breath Awareness",
-            duration = "8 Minute",
-            type = "Meditation",
-            photoUrl = "https://i.ibb.co/tqvjwx3/meditation-image-bg.png",
-            bannerUrl = "https://i.ibb.co/j59cXsX/meditation-image-example.png",
-            meditationImage = "https://i.ibb.co/wwqTCth/meditation-image.png"
-        )
+
     )
 }

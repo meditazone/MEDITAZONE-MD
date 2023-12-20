@@ -2,6 +2,7 @@ package com.waekaizo.meditazone.ui.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,7 +33,8 @@ import com.waekaizo.meditazone.ui.theme.prozaLibreFontFamily
 
 @Composable
 fun CardHome (
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navigateToInput: () -> Unit
 ) {
     Card(
         modifier = modifier
@@ -68,7 +70,13 @@ fun CardHome (
                     .padding(8.dp)
                     .align(Alignment.CenterHorizontally)
             )
-            EmotionDetect(modifier = Modifier.padding(top = 16.dp))
+            EmotionDetect(
+                modifier = Modifier
+                    .padding(top = 16.dp)
+                    .clickable {
+                        navigateToInput()
+                    }
+            )
         }
     }
 }
@@ -158,7 +166,9 @@ fun CardCategory(
 @Composable
 fun CardHomePreview() {
     MeditazoneTheme {
-        CardHome()
+        CardHome(
+            navigateToInput = {}
+        )
     }
 }
 

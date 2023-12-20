@@ -17,8 +17,10 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -33,12 +35,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.waekaizo.meditazone.R
+import com.waekaizo.meditazone.ui.components.ButtonGradient
 import com.waekaizo.meditazone.ui.theme.MeditazoneTheme
 import com.waekaizo.meditazone.ui.theme.Purple_Button2
 
 @Composable
 fun InputMLScreen(
-
+    navigateBack: () -> Unit
 ) {
     var inputStory by remember { mutableStateOf("") }
     Column(
@@ -46,52 +49,41 @@ fun InputMLScreen(
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-        InputMLContent()
+        InputMLContent(
+            navigateBack = navigateBack
+        )
         OutlinedTextField(
             value = inputStory,
             onValueChange = {inputStory = it},
             modifier = Modifier
                 .fillMaxWidth()
-                .height(580.dp)
+                .height(450.dp)
                 .padding(vertical = 16.dp),
             label = {
                 Text(text = stringResource(id = R.string.ask_emotion))
             },
-            shape = RoundedCornerShape(16.dp)
+            shape = RoundedCornerShape(16.dp),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedTextColor = Color.Black,
+                unfocusedTextColor = Color.Black
+            )
         )
-        IconButton(
-            onClick = { /*TODO*/ },
-            colors = IconButtonDefaults.iconButtonColors(
-                containerColor = Purple_Button2
-            ),
-            modifier = Modifier
-                .align(Alignment.End)
-                .padding(16.dp)
-                .background(shape = RoundedCornerShape(30.dp), color = Purple_Button2)
-                .size(100.dp),
-            content = {
-                Icon(
-                    imageVector = Icons.Default.ArrowForward,
-                    contentDescription = null,
-                    tint = Color.White,
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .size(100.dp)
-                )
-            }
+        ButtonGradient(
+            textButton = stringResource(id = R.string.next),
+            onClick = {}
         )
     }
 }
 
 @Composable
 fun InputMLContent(
-
+    navigateBack: () -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
         IconButton(
-            onClick = {},
+            onClick = {navigateBack()},
             modifier = Modifier
                 .padding(vertical = 32.dp)
         ) {
@@ -120,6 +112,8 @@ fun InputMLContent(
 @Composable
 fun InputMLScreenPreview() {
     MeditazoneTheme {
-        InputMLScreen()
+        InputMLScreen(
+            navigateBack = {}
+        )
     }
 }

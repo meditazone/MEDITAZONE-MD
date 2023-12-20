@@ -1,24 +1,32 @@
 package com.waekaizo.meditazone.model
 
+import com.waekaizo.meditazone.data.response.ArticleItem
+
 object FakeArticleData {
     val articles = listOf(
-        Article(
-            id = "1",
+        ArticleItem(
+            articleID = 1,
             title = "Apa itu meditasi ?",
-            duration = "15 Minute",
-            type = "Meditation",
+            category = "General",
+            thumbnail = "",
+            author = "",
+            articleUrl = ""
         ),
-        Article(
-            id = "2",
+        ArticleItem(
+            articleID = 2,
             title = "Tips Mengelola Stress",
-            duration = "10 Minute",
-            type = "Meditation",
+            category = "Anxiety",
+            thumbnail = "",
+            author = "",
+            articleUrl = ""
         ),
-        Article(
-            id = "3",
+        ArticleItem(
+            articleID = 3,
             title = "Efek dari Begadang Terus Menerus",
-            duration = "8 Minute",
-            type = "Meditation",
+            category = "Depresi",
+            thumbnail = "8 Minute",
+            author = "Meditation",
+            articleUrl = ""
         )
     )
 }

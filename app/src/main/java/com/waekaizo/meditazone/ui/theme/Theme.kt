@@ -26,7 +26,6 @@ private val LightColorScheme = lightColorScheme(
     primary = Purple_Button2,
     secondary = PurpleGrey40,
     tertiary = Pink40,
-    onSurface = Color.White
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),

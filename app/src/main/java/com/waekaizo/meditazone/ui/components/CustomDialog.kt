@@ -54,11 +54,12 @@ fun QuoteDialog(
     quote: String,
     nameMotivator: String,
     backgroundUrl: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onDismiss: () -> Unit
 ) {
     Dialog(
         onDismissRequest = {
-
+            onDismiss()
         },
         properties = DialogProperties(
             usePlatformDefaultWidth = false
@@ -67,11 +68,11 @@ fun QuoteDialog(
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .background(color = Color.Black.copy(alpha = 0.8F))
                 .padding(end = 24.dp)
-                .background(Color.Transparent)
         ) {
             IconButton(
-                onClick = {},
+                onClick = {onDismiss()},
                 modifier = Modifier.padding(16.dp)
             ) {
                 Icon(
@@ -320,7 +321,8 @@ fun QuoteDialogPreview() {
         QuoteDialog(
             quote = "Kamu tidak dapat mengontrol semuanya. Terkadang kamu hanya perlu rileks dan yakin bahwa segala sesuatunya akan berhasil. Lepaskan sedikit dan biarkan hidup berjalan selayaknya air mengalir",
             nameMotivator = "Jon Hamm",
-            backgroundUrl = ""
+            backgroundUrl = "",
+            onDismiss = {}
         )
     }
 }

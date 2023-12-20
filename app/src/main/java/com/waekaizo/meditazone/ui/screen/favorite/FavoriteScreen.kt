@@ -23,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.waekaizo.meditazone.R
+import com.waekaizo.meditazone.data.response.DataItem
 import com.waekaizo.meditazone.model.Category
 import com.waekaizo.meditazone.model.CategoryData
 import com.waekaizo.meditazone.model.FakeMeditationData
@@ -42,7 +43,7 @@ fun FavoriteScreen(
 
 @Composable
 fun FavoriteContent(
-    meditationItem: List<Meditation>,
+    meditationItem: List<DataItem>,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -69,9 +70,9 @@ fun FavoriteContent(
         Spacer(modifier = Modifier.height(16.dp))
         LazyColumn(
             content = {
-                items(meditationItem, key = { it.id }) { meditation ->
+                items(meditationItem, key = { it.meditationID }) { meditation ->
                     MeditationItemList(
-                        meditationImage = meditation.meditationImage,
+                        meditationImage = meditation.thumbnail,
                         title = meditation.title,
                         duration = meditation.duration
                     )

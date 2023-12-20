@@ -34,17 +34,18 @@ import com.waekaizo.meditazone.ui.theme.MeditazoneTheme
 fun MeditationItemList(
     meditationImage: String,
     title: String,
-    duration: String
+    duration: String,
+    modifier: Modifier = Modifier
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(16.dp)
     ) {
         Row {
-            Image(
-                painter = painterResource(id = R.drawable.meditation_image),
+            AsyncImage(
+                model = meditationImage,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier

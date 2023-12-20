@@ -1,7 +1,6 @@
 package com.waekaizo.meditazone.ui.components
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -19,11 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.ImageShader
-import androidx.compose.ui.graphics.ShaderBrush
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -32,7 +26,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.waekaizo.meditazone.R
-import com.waekaizo.meditazone.model.FakeQuoteData
 import com.waekaizo.meditazone.ui.theme.MeditazoneTheme
 
 @Composable
@@ -40,6 +33,8 @@ fun QuoteItem(
     quote: String,
     nameMotivator: String,
     backgroundUrl: String,
+    showDialog: Boolean,
+    onDismissDialog: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -107,6 +102,14 @@ fun QuoteItem(
             }
         }
     }
+    if (showDialog) {
+        QuoteDialog(
+            quote = quote,
+            nameMotivator = nameMotivator,
+            backgroundUrl = backgroundUrl,
+            onDismiss = {onDismissDialog()}
+        )
+    }
 }
 
 @Preview(showBackground = true)
@@ -116,7 +119,9 @@ fun QuoteItemPreview() {
         QuoteItem(
             quote = "Kamu tidak dapat mengontrol semuanya. Terkadang kamu hanya perlu rileks dan yakin bahwa segala sesuatunya akan berhasil. Lepaskan sedikit dan biarkan hidup berjalan selayaknya air mengalir",
             nameMotivator = "Jon Hamm",
-            backgroundUrl = ""
+            backgroundUrl = "",
+            showDialog = false,
+            onDismissDialog = {}
         )
     }
 }

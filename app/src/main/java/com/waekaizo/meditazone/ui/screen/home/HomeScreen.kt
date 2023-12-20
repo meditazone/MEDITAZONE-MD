@@ -2,6 +2,7 @@ package com.waekaizo.meditazone.ui.screen.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,38 +21,114 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.waekaizo.meditazone.R
+import com.waekaizo.meditazone.data.response.ArticleItem
+import com.waekaizo.meditazone.data.response.DataItem
+import com.waekaizo.meditazone.data.response.QuoteItem
+import com.waekaizo.meditazone.di.Injection
 import com.waekaizo.meditazone.model.FakeArticleData
 import com.waekaizo.meditazone.model.FakeMeditationData
 import com.waekaizo.meditazone.model.FakeQuoteData
+import com.waekaizo.meditazone.model.Quote
+import com.waekaizo.meditazone.ui.ViewModelFactory
+import com.waekaizo.meditazone.ui.common.UiState
 import com.waekaizo.meditazone.ui.components.ArticleRow
 import com.waekaizo.meditazone.ui.components.ArticleSection
 import com.waekaizo.meditazone.ui.components.CardHome
 import com.waekaizo.meditazone.ui.components.HomeSection
 import com.waekaizo.meditazone.ui.components.MeditationRow
+import com.waekaizo.meditazone.ui.components.QuoteDialog
 import com.waekaizo.meditazone.ui.components.QuoteRow
 import com.waekaizo.meditazone.ui.components.QuoteSection
 import com.waekaizo.meditazone.ui.theme.Grey
 import com.waekaizo.meditazone.ui.theme.MeditazoneTheme
 
 @Composable
-fun HomeScreen() {
-    HomeContent()
+fun HomeScreen(
+    modifier: Modifier = Modifier,
+    viewModel: HomeViewModel = viewModel(
+        factory = ViewModelFactory(Injection.provideRepository(LocalContext.current))
+    ),
+    navigateToPlayer: (Int) -> Unit,
+    navigateToInput: () -> Unit
+) {
+
+
+    viewModel.uiState.collectAsState(initial = UiState.Loading).value.let { uiState ->
+        when(uiState) {
+            is UiState.Loading -> {
+                viewModel.getAllMeditations()
+            }
+            is UiState.Success -> {
+                viewModel.listQuote.collectAsState(initial = UiState.Loading).value.let { quoteList ->
+                    when(quoteList) {
+                        is UiState.Loading -> {
+                            viewModel.getAllQuotes()
+                        }
+                        is UiState.Success -> {
+                            viewModel.listArticle.collectAsState(initial = UiState.Loading).value.let { articleList ->
+                                when(articleList) {
+                                    is UiState.Loading -> {
+                                        viewModel.getAllArticle()
+                                    }
+                                    is UiState.Success -> {
+                                        HomeContent(
+                                            meditationItem = uiState.data,
+                                            modifier = modifier,
+                                            navigateToPlayer = navigateToPlayer,
+                                            navigateToInput = navigateToInput,
+                                            onQuoteClick = { viewModel.onQuoteClick() },
+                                            quoteItem = quoteList.data,
+                                            showDialog = viewModel.isDialogShown,
+                                            onDismissDialog = {viewModel.onDismissDialog()},
+                                            listArticle = articleList.data
+                                        )
+                                    }
+                                    is UiState.Error -> {
+
+                                    }
+                                }
+                            }
+                        }
+                        is UiState.Error -> {
+
+                        }
+                    }
+                }
+            }
+            is UiState.Error -> {
+
+            }
+        }
+    }
 }
 
 @Composable
-fun HomeContent() {
+fun HomeContent(
+    meditationItem: List<DataItem>,
+    modifier: Modifier = Modifier,
+    navigateToPlayer: (Int) -> Unit,
+    navigateToInput: () -> Unit,
+    onQuoteClick: () -> Unit,
+    quoteItem: List<QuoteItem>,
+    showDialog: Boolean,
+    onDismissDialog: () -> Unit,
+    listArticle: List<ArticleItem>
+) {
     Column(
-        modifier = Modifier.verticalScroll(rememberScrollState())
+        modifier = modifier.verticalScroll(rememberScrollState())
     ) {
         Box {
             Image(
@@ -115,7 +192,8 @@ fun HomeContent() {
             CardHome(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
-                    .offset(y = 100.dp)
+                    .offset(y = 100.dp),
+                navigateToInput = navigateToInput
             )
         }
 
@@ -123,17 +201,32 @@ fun HomeContent() {
 
         HomeSection(
             title = stringResource(id = R.string.title_meditation),
-            content = { MeditationRow(listMeditation = FakeMeditationData.meditations)},
+            content = {
+                MeditationRow(
+                    listMeditation = meditationItem,
+                    navigateToPlayer = navigateToPlayer
+                )
+                      },
             modifier = Modifier.padding(start = 8.dp)
         )
         QuoteSection(
             title = stringResource(id = R.string.quote),
-            content = { QuoteRow(listQuote = FakeQuoteData.quotes) },
+            content = {
+                QuoteRow(
+                    listQuote = quoteItem,
+                    onQuoteClick = onQuoteClick,
+                    showDialog = showDialog,
+                    onDismissDialog = onDismissDialog
+                )
+                      },
             modifier = Modifier.padding(start = 8.dp)
         )
         ArticleSection(
             title = stringResource(id = R.string.title_article),
-            content = { ArticleRow(listMeditation = FakeArticleData.articles) },
+            content = {
+                ArticleRow(
+                    listMeditation = listArticle
+                ) },
             modifier = Modifier.padding(start = 8.dp)
         )
 
@@ -144,6 +237,15 @@ fun HomeContent() {
 @Composable
 private fun HomeScreenPreview() {
     MeditazoneTheme {
-        HomeContent()
+        HomeContent(
+            meditationItem = FakeMeditationData.meditations,
+            navigateToPlayer = {},
+            navigateToInput = {},
+            onQuoteClick = {  },
+            quoteItem = FakeQuoteData.quotes,
+            showDialog = true,
+            onDismissDialog = {},
+            listArticle = FakeArticleData.articles
+        )
     }
 }

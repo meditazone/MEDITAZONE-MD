@@ -1,5 +1,6 @@
 package com.waekaizo.meditazone.ui.navigation
 
+import android.graphics.drawable.Icon
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 

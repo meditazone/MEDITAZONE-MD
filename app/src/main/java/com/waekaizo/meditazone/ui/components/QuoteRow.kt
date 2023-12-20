@@ -20,7 +20,8 @@ fun QuoteRow(
     modifier: Modifier = Modifier,
     onQuoteClick: () -> Unit,
     showDialog: Boolean,
-    onDismissDialog: () -> Unit
+    onDismissDialog: () -> Unit,
+    navigateToQuote: (Int) -> Unit
 ) {
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -33,7 +34,7 @@ fun QuoteRow(
                 nameMotivator = quote.author,
                 backgroundUrl = quote.imageUrl,
                 modifier = Modifier
-                    .clickable { onQuoteClick() },
+                    .clickable { navigateToQuote(quote.quoteID) },
                 showDialog = showDialog,
                 onDismissDialog = onDismissDialog
             )
@@ -49,7 +50,8 @@ fun QuoteRowPreview() {
             listQuote = FakeQuoteData.quotes,
             onQuoteClick = {},
             showDialog = false,
-            onDismissDialog = {}
+            onDismissDialog = {},
+            navigateToQuote = {}
         )
     }
 }

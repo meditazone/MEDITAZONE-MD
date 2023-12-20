@@ -60,7 +60,6 @@ fun PlayerScreen(
     navigateBack: () -> Unit
 ) {
 
-
     viewModel.uiState.collectAsState(initial = UiState.Loading).value.let { uiState ->
         when (uiState) {
             is UiState.Loading -> {
@@ -77,6 +76,7 @@ fun PlayerScreen(
                             .build()
                     )
                     setDataSource(audioUrl)
+                    prepare()
                 }
                 PlayerContent(
                     title = data.title,
@@ -110,7 +110,7 @@ fun PlayerContent(
         mutableStateOf(true)
     }
     val currentMinutes = viewModel.currentMinutes.observeAsState()
-    mediaPlayer.prepareAsync()
+
     Box(
         modifier = modifier
             .fillMaxSize()

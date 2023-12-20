@@ -6,10 +6,12 @@ import com.waekaizo.meditazone.MeditazoneViewModel
 import com.waekaizo.meditazone.data.MeditazoneRepository
 import com.waekaizo.meditazone.ui.screen.category.CategoryViewModel
 import com.waekaizo.meditazone.ui.screen.home.HomeViewModel
+import com.waekaizo.meditazone.ui.screen.home.InputMLViewModel
 import com.waekaizo.meditazone.ui.screen.login.LoginViewModel
 import com.waekaizo.meditazone.ui.screen.login.RegisterViewModel
 import com.waekaizo.meditazone.ui.screen.meditation.MeditationViewModel
 import com.waekaizo.meditazone.ui.screen.player.PlayerViewModel
+import com.waekaizo.meditazone.ui.screen.quote.QuoteViewModel
 
 class ViewModelFactory(private val repository: MeditazoneRepository) : ViewModelProvider.NewInstanceFactory() {
 
@@ -35,6 +37,12 @@ class ViewModelFactory(private val repository: MeditazoneRepository) : ViewModel
         }
         if (modelClass.isAssignableFrom(MeditazoneViewModel::class.java)) {
             return MeditazoneViewModel(repository) as T
+        }
+        if (modelClass.isAssignableFrom(InputMLViewModel::class.java)) {
+            return InputMLViewModel(repository) as T
+        }
+        if (modelClass.isAssignableFrom(QuoteViewModel::class.java)) {
+            return QuoteViewModel(repository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
     }

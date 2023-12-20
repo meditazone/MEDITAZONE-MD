@@ -25,25 +25,36 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.waekaizo.meditazone.R
+import com.waekaizo.meditazone.di.Injection
+import com.waekaizo.meditazone.ui.ViewModelFactory
 import com.waekaizo.meditazone.ui.components.ButtonGradient
 import com.waekaizo.meditazone.ui.theme.MeditazoneTheme
 import com.waekaizo.meditazone.ui.theme.Purple_Button2
+import kotlinx.coroutines.launch
 
 @Composable
 fun InputMLScreen(
-    navigateBack: () -> Unit
+    navigateBack: () -> Unit,
+    viewModel: InputMLViewModel = viewModel(
+        factory = ViewModelFactory(Injection.provideRepository(LocalContext.current))
+    )
 ) {
-    var inputStory by remember { mutableStateOf("") }
+    var text by remember { mutableStateOf("") }
+    val coroutineScope = rememberCoroutineScope()
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -53,8 +64,8 @@ fun InputMLScreen(
             navigateBack = navigateBack
         )
         OutlinedTextField(
-            value = inputStory,
-            onValueChange = {inputStory = it},
+            value = text,
+            onValueChange = {text = it},
             modifier = Modifier
                 .fillMaxWidth()
                 .height(450.dp)
@@ -70,7 +81,11 @@ fun InputMLScreen(
         )
         ButtonGradient(
             textButton = stringResource(id = R.string.next),
-            onClick = {}
+            onClick = {
+                coroutineScope.launch {
+                    viewModel.sendInputML(text)
+                }
+            }
         )
     }
 }

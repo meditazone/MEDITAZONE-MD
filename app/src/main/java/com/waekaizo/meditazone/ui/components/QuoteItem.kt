@@ -102,14 +102,14 @@ fun QuoteItem(
             }
         }
     }
-    if (showDialog) {
+    /*if (showDialog) {
         QuoteDialog(
             quote = quote,
             nameMotivator = nameMotivator,
             backgroundUrl = backgroundUrl,
             onDismiss = {onDismissDialog()}
         )
-    }
+    }*/
 }
 
 @Preview(showBackground = true)

@@ -62,7 +62,8 @@ fun HomeScreen(
         factory = ViewModelFactory(Injection.provideRepository(LocalContext.current))
     ),
     navigateToPlayer: (Int) -> Unit,
-    navigateToInput: () -> Unit
+    navigateToInput: () -> Unit,
+    navigateToQuote: (Int) -> Unit
 ) {
 
 
@@ -93,7 +94,8 @@ fun HomeScreen(
                                             quoteItem = quoteList.data,
                                             showDialog = viewModel.isDialogShown,
                                             onDismissDialog = {viewModel.onDismissDialog()},
-                                            listArticle = articleList.data
+                                            listArticle = articleList.data,
+                                            navigateToQuote = navigateToQuote
                                         )
                                     }
                                     is UiState.Error -> {
@@ -125,7 +127,8 @@ fun HomeContent(
     quoteItem: List<QuoteItem>,
     showDialog: Boolean,
     onDismissDialog: () -> Unit,
-    listArticle: List<ArticleItem>
+    listArticle: List<ArticleItem>,
+    navigateToQuote: (Int) -> Unit
 ) {
     Column(
         modifier = modifier.verticalScroll(rememberScrollState())
@@ -216,7 +219,8 @@ fun HomeContent(
                     listQuote = quoteItem,
                     onQuoteClick = onQuoteClick,
                     showDialog = showDialog,
-                    onDismissDialog = onDismissDialog
+                    onDismissDialog = onDismissDialog,
+                    navigateToQuote = navigateToQuote
                 )
                       },
             modifier = Modifier.padding(start = 8.dp)
@@ -245,7 +249,8 @@ private fun HomeScreenPreview() {
             quoteItem = FakeQuoteData.quotes,
             showDialog = true,
             onDismissDialog = {},
-            listArticle = FakeArticleData.articles
+            listArticle = FakeArticleData.articles,
+            navigateToQuote = {}
         )
     }
 }

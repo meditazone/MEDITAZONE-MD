@@ -26,6 +26,7 @@ import com.waekaizo.meditazone.di.Injection
 import com.waekaizo.meditazone.ui.ViewModelFactory
 import com.waekaizo.meditazone.ui.common.UiState
 import com.waekaizo.meditazone.ui.components.BottomBar
+import com.waekaizo.meditazone.ui.components.QuoteDialog
 import com.waekaizo.meditazone.ui.navigation.Screen
 import com.waekaizo.meditazone.ui.screen.category.CategoryScreen
 import com.waekaizo.meditazone.ui.screen.home.HomeScreen
@@ -35,6 +36,7 @@ import com.waekaizo.meditazone.ui.screen.login.RegisterScreen
 import com.waekaizo.meditazone.ui.screen.meditation.MeditationScreen
 import com.waekaizo.meditazone.ui.screen.player.PlayerScreen
 import com.waekaizo.meditazone.ui.screen.profile.ProfileScreen
+import com.waekaizo.meditazone.ui.screen.quote.ShowQuoteDialog
 import com.waekaizo.meditazone.ui.theme.MeditazoneTheme
 
 @Composable
@@ -53,7 +55,7 @@ fun MeditazoneApp(
         bottomBar = {
             if (currentRoute != Screen.InputMl.route && currentRoute != Screen.Player.route && currentRoute != Screen.Signup.route && currentRoute != Screen.Login.route
                 && currentRoute != Screen.Category.route) {
-                BottomBar(navController)
+                BottomBar(navController, currentRoute)
             }
         },
         modifier = modifier
@@ -87,6 +89,9 @@ fun MeditazoneApp(
                     },
                     navigateToInput = {
                         navController.navigate(Screen.InputMl.route)
+                    },
+                    navigateToQuote = {quoteId ->
+                        navController.navigate(Screen.Quote.createRoute(quoteId))
                     }
                 )
             }
@@ -100,7 +105,7 @@ fun MeditazoneApp(
             composable(Screen.Profile.route) {
                 ProfileScreen()
             }
-                 composable(
+            composable(
                 route = Screen.Player.route,
                 arguments = listOf(navArgument("meditationId") { type = NavType.IntType}),
             ) {
@@ -149,6 +154,19 @@ fun MeditazoneApp(
                 LoginScreen(
                     navigateToSignUp = {
                         navController.navigate(Screen.Signup.route)
+                    }
+                )
+            }
+            composable(
+                route = Screen.Quote.route,
+                arguments = listOf(navArgument("quoteId") { type = NavType.IntType}),
+            ) {
+                val id = it.arguments?.getInt("quoteId") ?: -1
+
+                ShowQuoteDialog(
+                    quoteId = id,
+                    navigateBack = {
+                        navController.navigateUp()
                     }
                 )
             }

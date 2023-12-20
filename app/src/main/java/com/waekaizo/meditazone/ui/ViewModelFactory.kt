@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.waekaizo.meditazone.MeditazoneViewModel
 import com.waekaizo.meditazone.data.MeditazoneRepository
 import com.waekaizo.meditazone.ui.screen.category.CategoryViewModel
+import com.waekaizo.meditazone.ui.screen.home.HomeScreenWithMLViewModel
 import com.waekaizo.meditazone.ui.screen.home.HomeViewModel
 import com.waekaizo.meditazone.ui.screen.home.InputMLViewModel
 import com.waekaizo.meditazone.ui.screen.login.LoginViewModel
@@ -43,6 +44,9 @@ class ViewModelFactory(private val repository: MeditazoneRepository) : ViewModel
         }
         if (modelClass.isAssignableFrom(QuoteViewModel::class.java)) {
             return QuoteViewModel(repository) as T
+        }
+        if (modelClass.isAssignableFrom(HomeScreenWithMLViewModel::class.java)) {
+            return HomeScreenWithMLViewModel(repository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
     }

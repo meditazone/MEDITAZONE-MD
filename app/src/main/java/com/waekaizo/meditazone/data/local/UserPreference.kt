@@ -29,6 +29,18 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
         }
     }
 
+    suspend fun savePredictML(predictClass: String) {
+        dataStore.edit {preferences ->
+            preferences[PREDICT_CLASS_KEY] = predictClass
+        }
+    }
+
+    fun getPredictML(): Flow<String>{
+        return dataStore.data.map { preferences ->
+            preferences[PREDICT_CLASS_KEY] ?: ""
+        }
+    }
+
     suspend fun logout() {
         dataStore.edit { preferences ->
             preferences.clear()
@@ -41,6 +53,7 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
 
         private val TOKEN_KEY = stringPreferencesKey("token")
         private val IS_LOGIN_KEY = booleanPreferencesKey("isLogin")
+        private val PREDICT_CLASS_KEY = stringPreferencesKey("predictClass")
 
         fun getInstance(dataStore: DataStore<Preferences>): UserPreference {
             return INSTANCE ?: synchronized(this) {

@@ -132,28 +132,6 @@ fun CategoryContent(
                             title2 = title2,
                             descriptionCard = descriptionCard,
                         )
-                        IconButton(
-                            onClick = { /*TODO*/ },
-                            modifier = Modifier
-                                .padding(end = 32.dp)
-                                .align(Alignment.BottomEnd)
-                                .offset(y = 10.dp)
-                                .size(50.dp)
-                                .shadow(elevation = 10.dp, shape = CircleShape)
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.PlayArrow,
-                                contentDescription = null,
-                                tint = Color.White,
-                                modifier = Modifier
-                                    .size(100.dp)
-                                    .background(
-                                        color = MaterialTheme.colorScheme.primary,
-                                        shape = CircleShape
-                                    )
-                                    .padding(8.dp)
-                            )
-                        }
                     }
                 }
             }

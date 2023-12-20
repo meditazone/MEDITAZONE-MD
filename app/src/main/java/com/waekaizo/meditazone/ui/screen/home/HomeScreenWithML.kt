@@ -2,6 +2,7 @@ package com.waekaizo.meditazone.ui.screen.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,6 +22,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -47,15 +52,16 @@ import com.waekaizo.meditazone.ui.components.ArticleSection
 import com.waekaizo.meditazone.ui.components.CardHome
 import com.waekaizo.meditazone.ui.components.HomeSection
 import com.waekaizo.meditazone.ui.components.MeditationRow
+import com.waekaizo.meditazone.ui.components.QuoteItem
 import com.waekaizo.meditazone.ui.components.QuoteRow
 import com.waekaizo.meditazone.ui.components.QuoteSection
 import com.waekaizo.meditazone.ui.theme.Grey
 import com.waekaizo.meditazone.ui.theme.MeditazoneTheme
 
 @Composable
-fun HomeScreen(
+fun HomeScreenWithML(
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel = viewModel(
+    viewModel: HomeScreenWithMLViewModel = viewModel(
         factory = ViewModelFactory(Injection.provideRepository(LocalContext.current))
     ),
     navigateToPlayer: (Int) -> Unit,
@@ -63,37 +69,69 @@ fun HomeScreen(
     navigateToQuote: (Int) -> Unit
 ) {
 
+    var predictClassMeditation by remember {
+        mutableStateOf("")
+    }
 
-    viewModel.uiState.collectAsState(initial = UiState.Loading).value.let { uiState ->
-        when(uiState) {
+    var predictClassArticle by remember {
+        mutableStateOf("")
+    }
+
+    viewModel.predictClass.collectAsState(initial = UiState.Loading).value.let {classPredict ->
+        when(classPredict) {
             is UiState.Loading -> {
-                viewModel.getAllMeditations()
+                viewModel.getPredictML()
             }
             is UiState.Success -> {
-                viewModel.listQuote.collectAsState(initial = UiState.Loading).value.let { quoteList ->
-                    when(quoteList) {
+                val data = classPredict.data
+
+                if (data == "anxiety") {
+                    predictClassMeditation = "Breath Awareness"
+                    predictClassArticle = "Anxiety"
+                } else if (data == "depression") {
+                    predictClassMeditation = "Loving Kindness"
+                    predictClassArticle = "Depresi"
+                } else if (data == "stress") {
+                    predictClassMeditation = "Mindfullness"
+                    predictClassArticle = "Stress"
+                }
+
+                viewModel.meditation.collectAsState(initial = UiState.Loading).value.let { meditation ->
+                    when(meditation) {
                         is UiState.Loading -> {
-                            viewModel.getAllQuotes()
+                            viewModel.getMeditationByCategory(predictClassMeditation)
                         }
                         is UiState.Success -> {
-                            viewModel.listArticle.collectAsState(initial = UiState.Loading).value.let { articleList ->
-                                when(articleList) {
+                            viewModel.quote.collectAsState(initial = UiState.Loading).value.let { quote ->
+                                when(quote) {
                                     is UiState.Loading -> {
-                                        viewModel.getAllArticle()
+                                        viewModel.getRandomQuoteById()
                                     }
                                     is UiState.Success -> {
-                                        HomeContent(
-                                            meditationItem = uiState.data,
-                                            modifier = modifier,
-                                            navigateToPlayer = navigateToPlayer,
-                                            navigateToInput = navigateToInput,
-                                            onQuoteClick = { viewModel.onQuoteClick() },
-                                            quoteItem = quoteList.data,
-                                            showDialog = viewModel.isDialogShown,
-                                            onDismissDialog = {viewModel.onDismissDialog()},
-                                            listArticle = articleList.data,
-                                            navigateToQuote = navigateToQuote
-                                        )
+                                        viewModel.article.collectAsState(initial = UiState.Loading).value.let { article ->
+                                            when(article) {
+                                                is UiState.Loading -> {
+                                                    viewModel.getArticleByCategory(predictClassArticle)
+                                                }
+                                                is UiState.Success -> {
+                                                    HomeContentWithML(
+                                                        meditationItem = meditation.data,
+                                                        modifier = modifier,
+                                                        navigateToPlayer = navigateToPlayer,
+                                                        navigateToInput = navigateToInput,
+                                                        onQuoteClick = {  },
+                                                        quoteItem = quote.data,
+                                                        showDialog = true,
+                                                        onDismissDialog = {},
+                                                        listArticle = article.data,
+                                                        navigateToQuote = navigateToQuote
+                                                    )
+                                                }
+                                                is UiState.Error -> {
+
+                                                }
+                                            }
+                                        }
                                     }
                                     is UiState.Error -> {
 
@@ -115,13 +153,13 @@ fun HomeScreen(
 }
 
 @Composable
-fun HomeContent(
+fun HomeContentWithML(
     meditationItem: List<DataItem>,
     modifier: Modifier = Modifier,
     navigateToPlayer: (Int) -> Unit,
     navigateToInput: () -> Unit,
     onQuoteClick: () -> Unit,
-    quoteItem: List<QuoteItem>,
+    quoteItem: QuoteItem,
     showDialog: Boolean,
     onDismissDialog: () -> Unit,
     listArticle: List<ArticleItem>,
@@ -200,20 +238,22 @@ fun HomeContent(
                     listMeditation = meditationItem,
                     navigateToPlayer = navigateToPlayer
                 )
-                      },
+            },
             modifier = Modifier.padding(start = 8.dp)
         )
         QuoteSection(
             title = stringResource(id = R.string.quote),
             content = {
-                QuoteRow(
-                    listQuote = quoteItem,
-                    onQuoteClick = onQuoteClick,
+                QuoteItem(
+                    quote = quoteItem.quote,
+                    nameMotivator = quoteItem.author,
+                    backgroundUrl = quoteItem.imageUrl,
+                    modifier = Modifier
+                        .clickable { navigateToQuote(quoteItem.quoteID) },
                     showDialog = showDialog,
-                    onDismissDialog = onDismissDialog,
-                    navigateToQuote = navigateToQuote
+                    onDismissDialog = onDismissDialog
                 )
-                      },
+            },
             modifier = Modifier.padding(start = 8.dp)
         )
         ArticleSection(
@@ -230,14 +270,14 @@ fun HomeContent(
 
 @Preview(showBackground = true, device = Devices.PIXEL_4)
 @Composable
-private fun HomeScreenPreview() {
+private fun HomeScreenMLPreview() {
     MeditazoneTheme {
-        HomeContent(
+        HomeContentWithML(
             meditationItem = FakeMeditationData.meditations,
             navigateToPlayer = {},
             navigateToInput = {},
             onQuoteClick = {  },
-            quoteItem = FakeQuoteData.quotes,
+            quoteItem = FakeQuoteData.quotes[1],
             showDialog = true,
             onDismissDialog = {},
             listArticle = FakeArticleData.articles,

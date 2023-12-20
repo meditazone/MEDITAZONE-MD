@@ -79,10 +79,22 @@ class MeditazoneRepository private constructor(
         return flowOf(response.data)
     }
 
-    suspend fun getQuoteById(meditationId: Int): QuoteItem {
+    suspend fun getQuoteById(quoteId: Int): QuoteItem {
         val response = apiService.getAllQuotes()
         return response.data.first {
-            it.quoteID == meditationId
+            it.quoteID == quoteId
+        }
+    }
+
+    suspend fun getRandomQuoteById(): QuoteItem {
+        val response = apiService.getAllQuotes()
+        val range = 60 - 1 + 1
+        val randomNumber = (Math.random() * range).toInt() + 1
+
+        Log.d("RANDOM NUMBER", "randomNumber: $randomNumber")
+
+        return response.data.first {
+            it.quoteID == randomNumber
         }
     }
 
@@ -92,11 +104,13 @@ class MeditazoneRepository private constructor(
         return flowOf(response.data)
     }
 
-    /*suspend fun register(name: String, email: String, password: String, confirmPassword: String): SignUpResponse {
-        val request = apiService.register(name, email, password, confirmPassword)
-        Log.d("SIGNUP", "signUp: ${request.message}")
-        return request
-    }*/
+    suspend fun getArticleByCategory(category: String): Flow<List<ArticleItem>> {
+        val response = apiService.getAllArticle()
+
+        return flowOf(response.data.filter {
+            it.category.contains(category, ignoreCase = true)
+        })
+    }
 
     suspend fun login(email: String, password: String): LoginResponse {
         val response = apiService.login(email, password)
@@ -118,9 +132,13 @@ class MeditazoneRepository private constructor(
     }
 
     suspend fun sendInputML(text: String): MLResponse {
-
         val response = apiServiceML.sendInputML(text)
+        userPreference.savePredictML(response.predictedClass)
         return response
+    }
+
+    fun getPredictML(): Flow<String> {
+        return userPreference.getPredictML()
     }
 
     companion object {

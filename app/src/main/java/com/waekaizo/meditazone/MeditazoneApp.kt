@@ -30,6 +30,7 @@ import com.waekaizo.meditazone.ui.components.QuoteDialog
 import com.waekaizo.meditazone.ui.navigation.Screen
 import com.waekaizo.meditazone.ui.screen.category.CategoryScreen
 import com.waekaizo.meditazone.ui.screen.home.HomeScreen
+import com.waekaizo.meditazone.ui.screen.home.HomeScreenWithML
 import com.waekaizo.meditazone.ui.screen.home.InputMLScreen
 import com.waekaizo.meditazone.ui.screen.login.LoginScreen
 import com.waekaizo.meditazone.ui.screen.login.RegisterScreen
@@ -50,6 +51,9 @@ fun MeditazoneApp(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
     var startDestination by remember { mutableStateOf(Screen.Home.route) }
+    var predictClassValue by remember {
+        mutableStateOf("")
+    }
 
     Scaffold(
         bottomBar = {
@@ -83,17 +87,45 @@ fun MeditazoneApp(
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(Screen.Home.route) {
-                HomeScreen(
-                    navigateToPlayer = {meditationId ->
-                        navController.navigate(Screen.Player.createRoute(meditationId))
-                    },
-                    navigateToInput = {
-                        navController.navigate(Screen.InputMl.route)
-                    },
-                    navigateToQuote = {quoteId ->
-                        navController.navigate(Screen.Quote.createRoute(quoteId))
+                viewModel.predictClass.collectAsState(initial = UiState.Loading).value.let { predictClass ->
+                    when(predictClass) {
+                        is UiState.Loading -> {
+                            viewModel.getPredictML()
+                        }
+                        is UiState.Success -> {
+                            predictClassValue = predictClass.data
+                        }
+                        is UiState.Error -> {
+
+                        }
                     }
-                )
+                }
+
+                if (predictClassValue != "") {
+                    HomeScreenWithML(
+                        navigateToPlayer = { meditationId ->
+                            navController.navigate(Screen.Player.createRoute(meditationId))
+                        },
+                        navigateToInput = {
+                            navController.navigate(Screen.InputMl.route)
+                        },
+                        navigateToQuote = {quoteId ->
+                            navController.navigate(Screen.Quote.createRoute(quoteId))
+                        }
+                    )
+                } else {
+                    HomeScreen(
+                        navigateToPlayer = {meditationId ->
+                            navController.navigate(Screen.Player.createRoute(meditationId))
+                        },
+                        navigateToInput = {
+                            navController.navigate(Screen.InputMl.route)
+                        },
+                        navigateToQuote = {quoteId ->
+                            navController.navigate(Screen.Quote.createRoute(quoteId))
+                        }
+                    )
+                }
             }
             composable(Screen.Meditation.route) {
                 MeditationScreen(

@@ -24,8 +24,6 @@ class InputMLViewModel(private val repository: MeditazoneRepository) : ViewModel
     suspend fun sendInputML(text: String) {
         viewModelScope.launch {
             repository.sendInputML(text)
-
-            _classPredict.value = repository.sendInputML(text).predictedClass
         }
     }
 }

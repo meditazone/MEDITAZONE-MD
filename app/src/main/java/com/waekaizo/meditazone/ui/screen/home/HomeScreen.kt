@@ -64,7 +64,6 @@ fun HomeScreen(
     navigateToArticle: (Int) -> Unit
 ) {
 
-
     viewModel.uiState.collectAsState(initial = UiState.Loading).value.let { uiState ->
         when(uiState) {
             is UiState.Loading -> {

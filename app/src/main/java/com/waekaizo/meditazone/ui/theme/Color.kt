@@ -18,3 +18,6 @@ val Grey40 = Color(0xFF5F5D67)
 
 val Purple_Button1 = Color(0xFF7059F1)
 val Purple_Button2 = Color(0xFF8565EC)
+val Purple_Splash = Color(0xFF6D58DF)
+val Purple_Splash1 = Color(0xFF3E2D9E)
+val Purple_Splash2 = Color(0xFF5441BA)

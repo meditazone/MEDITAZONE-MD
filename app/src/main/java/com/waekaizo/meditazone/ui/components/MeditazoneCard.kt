@@ -66,9 +66,9 @@ fun CardHome (
             )
             Text(
                 text = stringResource(id = R.string.home_card_subtitle),
-                style = MaterialTheme.typography.bodySmall.copy(
+                style = MaterialTheme.typography.bodyMedium.copy(
                     fontWeight = FontWeight.Normal,
-                    fontSize = 10.sp
+                    fontSize = 12.sp
                 ),
                 modifier = Modifier
                     .padding(8.dp)
@@ -199,9 +199,9 @@ fun CardHomeML (
             )
             Text(
                 text = stringResource(id = R.string.home_card_subtitle),
-                style = MaterialTheme.typography.bodySmall.copy(
+                style = MaterialTheme.typography.bodyMedium.copy(
                     fontWeight = FontWeight.Normal,
-                    fontSize = 10.sp
+                    fontSize = 12.sp
                 ),
                 modifier = Modifier
                     .padding(8.dp)

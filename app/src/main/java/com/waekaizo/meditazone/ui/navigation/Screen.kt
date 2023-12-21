@@ -20,4 +20,6 @@ sealed class Screen(val route: String) {
     object Article : Screen("home/article/{articleId}") {
         fun createRoute(articleId: Int) = "home/article/$articleId"
     }
+    object SplashScreen : Screen("splash")
 }
+

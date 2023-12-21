@@ -3,6 +3,7 @@ package com.waekaizo.meditazone
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -37,8 +38,10 @@ import com.waekaizo.meditazone.ui.screen.meditation.MeditationScreen
 import com.waekaizo.meditazone.ui.screen.player.PlayerScreen
 import com.waekaizo.meditazone.ui.screen.profile.ProfileScreen
 import com.waekaizo.meditazone.ui.screen.quote.ShowQuoteDialog
+import com.waekaizo.meditazone.ui.screen.splash.MeditazoneSplashScreen
 import com.waekaizo.meditazone.ui.screen.success.ShowSuccessDialog
 import com.waekaizo.meditazone.ui.theme.MeditazoneTheme
+import kotlinx.coroutines.delay
 
 @Composable
 fun MeditazoneApp(
@@ -50,7 +53,7 @@ fun MeditazoneApp(
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
-    var startDestination by remember { mutableStateOf(Screen.Home.route) }
+    var startDestination by remember { mutableStateOf(Screen.SplashScreen.route) }
     var predictClassValue by remember {
         mutableStateOf("")
     }
@@ -58,7 +61,7 @@ fun MeditazoneApp(
     Scaffold(
         bottomBar = {
             if (currentRoute != Screen.InputMl.route && currentRoute != Screen.Player.route && currentRoute != Screen.Signup.route && currentRoute != Screen.Login.route
-                && currentRoute != Screen.Category.route) {
+                && currentRoute != Screen.Category.route && currentRoute != Screen.SplashScreen.route) {
                 BottomBar(navController, currentRoute)
             }
         },
@@ -70,6 +73,9 @@ fun MeditazoneApp(
                     viewModel.getSession()
                 }
                 is UiState.Success -> {
+                    LaunchedEffect(key1 = true, block = {
+                        delay(2000L)
+                    })
                     startDestination = if (!session.data.isLogin) {
                         Screen.Login.route
                     } else {
@@ -220,6 +226,8 @@ fun MeditazoneApp(
                             popUpTo(navController.graph.findStartDestination().id) {
                                 saveState = true
                             }
+                            restoreState = true
+                            launchSingleTop = true
                         }
                     }
                 )
@@ -235,6 +243,13 @@ fun MeditazoneApp(
                     navigateBack = {
                         navController.navigateUp()
                     }
+                )
+            }
+            composable(
+                route = Screen.SplashScreen.route
+            ) {
+                MeditazoneSplashScreen(
+                    navController = navController
                 )
             }
         }

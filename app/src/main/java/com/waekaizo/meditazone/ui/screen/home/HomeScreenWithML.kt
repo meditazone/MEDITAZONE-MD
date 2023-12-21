@@ -53,7 +53,7 @@ import com.waekaizo.meditazone.ui.components.ArticleRow
 import com.waekaizo.meditazone.ui.components.CardHomeML
 import com.waekaizo.meditazone.ui.components.CategorySection
 import com.waekaizo.meditazone.ui.components.MeditationRow
-import com.waekaizo.meditazone.ui.components.QuoteItem
+import com.waekaizo.meditazone.ui.components.QuoteItemML
 import com.waekaizo.meditazone.ui.theme.Grey
 import com.waekaizo.meditazone.ui.theme.MeditazoneTheme
 
@@ -270,7 +270,7 @@ fun HomeContentWithML(
             text1 = stringResource(id = R.string.quote),
             text2 = stringResource(id = R.string.recommend_quote),
             content = {
-                QuoteItem(
+                QuoteItemML(
                     quote = quoteItem.quote,
                     nameMotivator = quoteItem.author,
                     backgroundUrl = quoteItem.imageUrl,

@@ -63,6 +63,8 @@
     <string name="recommend_article">Rekomendasi article bedasarkan suasana hati anda</string>
     <string name="recommend_quote">Rekomendasi quote bedasarkan suasana hati anda</string>
     <string name="your_feel">Perasaan anda saat ini : </string>
+    <string name="meditazone">MEDITAZONE</string>
+    <string name="meditazone_moto">Meditation and Relaxation</string>
 
     /For Favorite
     <string name="your_favorite">Favorit Kamu</string>

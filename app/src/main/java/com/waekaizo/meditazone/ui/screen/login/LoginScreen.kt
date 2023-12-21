@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
@@ -58,6 +60,7 @@ fun LoginScreen(
             modifier = Modifier
                 .padding(8.dp)
                 .fillMaxSize()
+                .verticalScroll(rememberScrollState())
         ) {
             SectionText2(
                 title1 = stringResource(id = R.string.title_login),

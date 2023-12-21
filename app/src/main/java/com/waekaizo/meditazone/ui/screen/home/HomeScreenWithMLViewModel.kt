@@ -68,8 +68,16 @@ class HomeScreenWithMLViewModel(private val repository: MeditazoneRepository) : 
     }
 
     fun getRandomQuoteById() {
+        val range = 35 - 1 + 1
+        val randomNumber = (Math.random() * range).toInt() + 1
         viewModelScope.launch {
-            _quote.value = UiState.Success(repository.getRandomQuoteById())
+            _quote.value = UiState.Success(repository.getRandomQuoteById(randomNumber))
+        }
+    }
+
+    fun clearPredictML() {
+        viewModelScope.launch {
+            repository.clearPredictMl()
         }
     }
 }

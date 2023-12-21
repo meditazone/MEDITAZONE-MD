@@ -23,11 +23,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -48,13 +50,10 @@ import com.waekaizo.meditazone.model.FakeQuoteData
 import com.waekaizo.meditazone.ui.ViewModelFactory
 import com.waekaizo.meditazone.ui.common.UiState
 import com.waekaizo.meditazone.ui.components.ArticleRow
-import com.waekaizo.meditazone.ui.components.ArticleSection
-import com.waekaizo.meditazone.ui.components.CardHome
-import com.waekaizo.meditazone.ui.components.HomeSection
+import com.waekaizo.meditazone.ui.components.CardHomeML
+import com.waekaizo.meditazone.ui.components.CategorySection
 import com.waekaizo.meditazone.ui.components.MeditationRow
 import com.waekaizo.meditazone.ui.components.QuoteItem
-import com.waekaizo.meditazone.ui.components.QuoteRow
-import com.waekaizo.meditazone.ui.components.QuoteSection
 import com.waekaizo.meditazone.ui.theme.Grey
 import com.waekaizo.meditazone.ui.theme.MeditazoneTheme
 
@@ -66,7 +65,8 @@ fun HomeScreenWithML(
     ),
     navigateToPlayer: (Int) -> Unit,
     navigateToInput: () -> Unit,
-    navigateToQuote: (Int) -> Unit
+    navigateToQuote: (Int) -> Unit,
+    navigateToArticle: (Int) -> Unit
 ) {
 
     var predictClassMeditation by remember {
@@ -75,6 +75,14 @@ fun HomeScreenWithML(
 
     var predictClassArticle by remember {
         mutableStateOf("")
+    }
+
+    var predictClassCard by remember {
+        mutableStateOf("")
+    }
+
+    var icon by remember {
+        mutableIntStateOf(1)
     }
 
     viewModel.predictClass.collectAsState(initial = UiState.Loading).value.let {classPredict ->
@@ -88,12 +96,18 @@ fun HomeScreenWithML(
                 if (data == "anxiety") {
                     predictClassMeditation = "Breath Awareness"
                     predictClassArticle = "Anxiety"
+                    predictClassCard = "Anxiety"
+                    icon = R.drawable.emote_stress
                 } else if (data == "depression") {
                     predictClassMeditation = "Loving Kindness"
                     predictClassArticle = "Depresi"
+                    predictClassCard = "Depresi"
+                    icon = R.drawable.emote_stress
                 } else if (data == "stress") {
                     predictClassMeditation = "Mindfullness"
                     predictClassArticle = "Stress"
+                    predictClassCard = "Stress"
+                    icon = R.drawable.emote_stress
                 }
 
                 viewModel.meditation.collectAsState(initial = UiState.Loading).value.let { meditation ->
@@ -124,7 +138,11 @@ fun HomeScreenWithML(
                                                         showDialog = true,
                                                         onDismissDialog = {},
                                                         listArticle = article.data,
-                                                        navigateToQuote = navigateToQuote
+                                                        navigateToQuote = navigateToQuote,
+                                                        navigateToArticleDialog = navigateToArticle,
+                                                        classPredictCard = predictClassCard,
+                                                        icon = painterResource(id = icon),
+                                                        clearPredictButton = {  viewModel.clearPredictML() }
                                                     )
                                                 }
                                                 is UiState.Error -> {
@@ -163,7 +181,11 @@ fun HomeContentWithML(
     showDialog: Boolean,
     onDismissDialog: () -> Unit,
     listArticle: List<ArticleItem>,
-    navigateToQuote: (Int) -> Unit
+    navigateToQuote: (Int) -> Unit,
+    navigateToArticleDialog: (Int) -> Unit,
+    classPredictCard: String,
+    icon: Painter,
+    clearPredictButton: () -> Unit
 ) {
     Column(
         modifier = modifier.verticalScroll(rememberScrollState())
@@ -221,18 +243,21 @@ fun HomeContentWithML(
                     }
                 }
             }
-            CardHome(
+            CardHomeML(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .offset(y = 100.dp),
-                navigateToInput = navigateToInput
+                clearClassPredict = clearPredictButton,
+                icon = icon,
+                classPredict = classPredictCard,
             )
         }
 
         Spacer(modifier = Modifier.height(120.dp))
 
-        HomeSection(
-            title = stringResource(id = R.string.title_meditation),
+        CategorySection(
+            text1 = stringResource(id = R.string.title_meditation),
+            text2 = stringResource(id = R.string.recommend_meditation),
             content = {
                 MeditationRow(
                     listMeditation = meditationItem,
@@ -241,8 +266,9 @@ fun HomeContentWithML(
             },
             modifier = Modifier.padding(start = 8.dp)
         )
-        QuoteSection(
-            title = stringResource(id = R.string.quote),
+        CategorySection(
+            text1 = stringResource(id = R.string.quote),
+            text2 = stringResource(id = R.string.recommend_quote),
             content = {
                 QuoteItem(
                     quote = quoteItem.quote,
@@ -256,11 +282,13 @@ fun HomeContentWithML(
             },
             modifier = Modifier.padding(start = 8.dp)
         )
-        ArticleSection(
-            title = stringResource(id = R.string.title_article),
+        CategorySection(
+            text1 = stringResource(id = R.string.title_article),
+            text2 = stringResource(id = R.string.recommend_article),
             content = {
                 ArticleRow(
-                    listMeditation = listArticle
+                    listMeditation = listArticle,
+                    showDialog = navigateToArticleDialog
                 ) },
             modifier = Modifier.padding(start = 8.dp)
         )
@@ -281,7 +309,11 @@ private fun HomeScreenMLPreview() {
             showDialog = true,
             onDismissDialog = {},
             listArticle = FakeArticleData.articles,
-            navigateToQuote = {}
+            navigateToQuote = {},
+            navigateToArticleDialog = {},
+            classPredictCard = "Stress",
+            icon = painterResource(id = R.drawable.emot_smile),
+            clearPredictButton = {}
         )
     }
 }

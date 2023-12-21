@@ -6,7 +6,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -20,6 +22,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -162,7 +166,58 @@ fun CardCategory(
     }
 }
 
-@Preview(showBackground = true)
+@Composable
+fun CardHomeML (
+    classPredict: String,
+    icon: Painter,
+    modifier: Modifier = Modifier,
+    clearClassPredict: () -> Unit
+) {
+    Card(
+        modifier = modifier
+            .size(width = 353.dp, height = 202.dp)
+            .padding(8.dp),
+        shape = RoundedCornerShape(20.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Grey_Card
+        )
+    ) {
+        Column(
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(8.dp)
+                .fillMaxSize()
+        ) {
+            Text(
+                text = stringResource(id = R.string.home_card_title),
+                style = MaterialTheme.typography.headlineMedium.copy(
+                    fontWeight = FontWeight.Medium
+                ),
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+            )
+            Text(
+                text = stringResource(id = R.string.home_card_subtitle),
+                style = MaterialTheme.typography.bodySmall.copy(
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 10.sp
+                ),
+                modifier = Modifier
+                    .padding(8.dp)
+                    .align(Alignment.CenterHorizontally)
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            EmotionDetectML(
+                classPredict = classPredict,
+                icon = icon,
+                clearClassPredict = clearClassPredict
+            )
+        }
+    }
+}
+
+/*@Preview(showBackground = true)
 @Composable
 fun CardHomePreview() {
     MeditazoneTheme {
@@ -188,6 +243,18 @@ fun CardCategoryPreview() {
             titleCard = "Loving-Kindness",
             title2 = "Meditasi Metta",
             descriptionCard = "Raih ketenangan melalui Meditasi Metta, solusi penuh kasih untuk mengurangi stres dan depresi. Langkah penuh kasih membuka pintu kebaikan, menciptakan ruang ketenangan batin. Teman setia untuk merangkul kesejahteraan mental dan hidup penuh cinta"
+        )
+    }
+}*/
+
+@Preview(showBackground = true)
+@Composable
+fun CardHomeMLPreview() {
+    MeditazoneTheme {
+        CardHomeML(
+            classPredict = "Anxiety",
+            icon = painterResource(id = R.drawable.emot_smile),
+            clearClassPredict = {}
         )
     }
 }

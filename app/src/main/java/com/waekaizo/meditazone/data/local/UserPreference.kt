@@ -47,6 +47,12 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
         }
     }
 
+    suspend fun clearPredictClass() {
+        dataStore.edit { preferences ->
+            preferences[PREDICT_CLASS_KEY] = ""
+        }
+    }
+
     companion object {
         @Volatile
         private var INSTANCE: UserPreference? = null

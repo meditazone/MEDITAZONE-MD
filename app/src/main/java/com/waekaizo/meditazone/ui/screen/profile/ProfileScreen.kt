@@ -7,45 +7,35 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.text.selection.TextSelectionColors
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddAPhoto
 import androidx.compose.material.icons.filled.Brightness6
-import androidx.compose.material.icons.filled.CameraAlt
-import androidx.compose.material.icons.filled.Colorize
 import androidx.compose.material.icons.filled.Create
-import androidx.compose.material.icons.filled.DarkMode
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.outlined.CameraAlt
 import androidx.compose.material.icons.outlined.FavoriteBorder
-import androidx.compose.material.icons.outlined.PersonOutline
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -53,24 +43,39 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.waekaizo.meditazone.R
+import com.waekaizo.meditazone.di.Injection
+import com.waekaizo.meditazone.ui.ViewModelFactory
 import com.waekaizo.meditazone.ui.theme.MeditazoneTheme
 import com.waekaizo.meditazone.ui.theme.robotoFontFamily
 
 @Composable
-fun ProfileScreen() {
-    ProfileContent()
+fun ProfileScreen(
+    viewModel: ProfileViewModel = viewModel(
+        factory = ViewModelFactory(Injection.provideRepository(LocalContext.current))
+    )
+) {
+    val name by remember { mutableStateOf("User") }
+
+    ProfileContent(
+        name = name,
+        logout = {
+            viewModel.logout()
+        }
+    )
 }
 
 @Composable
 fun ProfileContent(
-
+    name: String,
+    logout: () -> Unit
 ) {
-    var name by remember { mutableStateOf("David") }
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(vertical = 32.dp, horizontal = 16.dp)
+            .verticalScroll(rememberScrollState())
     ) {
         Text(
             text = stringResource(id = R.string.menu_profile),
@@ -215,6 +220,38 @@ fun ProfileContent(
                     fontSize = 20.sp
                 )
             }
+            Icon(
+                imageVector = Icons.Default.KeyboardArrowRight,
+                contentDescription = null,
+                modifier = Modifier
+                    .padding(end = 16.dp)
+                    .size(30.dp)
+                    .align(Alignment.CenterVertically)
+            )
+        }
+        Spacer(modifier = Modifier.height(32.dp))
+        Text(
+            text = stringResource(id = R.string.login),
+            color = Color.Gray
+        )
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp)
+                .clickable {
+                    logout()
+                }
+        ) {
+            Text(
+                text = stringResource(id = R.string.logout),
+                modifier = Modifier,
+                textAlign = TextAlign.Center,
+                fontSize = 20.sp,
+                color = Color.Red
+            )
+
             Icon(
                 imageVector = Icons.Default.KeyboardArrowRight,
                 contentDescription = null,

@@ -3,10 +3,8 @@ package com.waekaizo.meditazone
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -15,6 +13,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -26,8 +25,8 @@ import com.waekaizo.meditazone.di.Injection
 import com.waekaizo.meditazone.ui.ViewModelFactory
 import com.waekaizo.meditazone.ui.common.UiState
 import com.waekaizo.meditazone.ui.components.BottomBar
-import com.waekaizo.meditazone.ui.components.QuoteDialog
 import com.waekaizo.meditazone.ui.navigation.Screen
+import com.waekaizo.meditazone.ui.screen.article.ShowArticleDialog
 import com.waekaizo.meditazone.ui.screen.category.CategoryScreen
 import com.waekaizo.meditazone.ui.screen.home.HomeScreen
 import com.waekaizo.meditazone.ui.screen.home.HomeScreenWithML
@@ -38,6 +37,7 @@ import com.waekaizo.meditazone.ui.screen.meditation.MeditationScreen
 import com.waekaizo.meditazone.ui.screen.player.PlayerScreen
 import com.waekaizo.meditazone.ui.screen.profile.ProfileScreen
 import com.waekaizo.meditazone.ui.screen.quote.ShowQuoteDialog
+import com.waekaizo.meditazone.ui.screen.success.ShowSuccessDialog
 import com.waekaizo.meditazone.ui.theme.MeditazoneTheme
 
 @Composable
@@ -111,6 +111,9 @@ fun MeditazoneApp(
                         },
                         navigateToQuote = {quoteId ->
                             navController.navigate(Screen.Quote.createRoute(quoteId))
+                        },
+                        navigateToArticle = {articleId ->
+                            navController.navigate(Screen.Article.createRoute(articleId))
                         }
                     )
                 } else {
@@ -123,6 +126,9 @@ fun MeditazoneApp(
                         },
                         navigateToQuote = {quoteId ->
                             navController.navigate(Screen.Quote.createRoute(quoteId))
+                        },
+                        navigateToArticle = {articleId ->
+                            navController.navigate(Screen.Article.createRoute(articleId))
                         }
                     )
                 }
@@ -155,6 +161,9 @@ fun MeditazoneApp(
                 InputMLScreen(
                     navigateBack = {
                         navController.navigateUp()
+                    },
+                    navigateToSuccessDialog = {
+                        navController.navigate(Screen.Success.route)
                     }
                 )
             }
@@ -197,6 +206,32 @@ fun MeditazoneApp(
 
                 ShowQuoteDialog(
                     quoteId = id,
+                    navigateBack = {
+                        navController.navigateUp()
+                    }
+                )
+            }
+            composable(
+                route = Screen.Success.route
+            ) {
+                ShowSuccessDialog(
+                    navigateBack = {
+                        navController.navigate(Screen.Home.route) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                        }
+                    }
+                )
+            }
+            composable(
+                route = Screen.Article.route,
+                arguments = listOf(navArgument("articleId") {type = NavType.IntType})
+            ) {
+                val id = it.arguments?.getInt("articleId") ?: -1
+
+                ShowArticleDialog(
+                    articleId = id,
                     navigateBack = {
                         navController.navigateUp()
                     }

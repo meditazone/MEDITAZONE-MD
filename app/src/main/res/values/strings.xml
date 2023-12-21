@@ -55,11 +55,23 @@
     <string name="input_name">Masukan nama anda</string>
     <string name="theme">Theme</string>
     <string name="next">Selanjutnya</string>
+    <string name="response_success">Penting untuk diingat bahwa respons terhadap berbagai jenis meditasi dapat bervariasi antar individu.
+        Pilihan meditasi yang tepat untuk seseorang dengan masalah ini mungkin tidak sama untuk orang lain.
+        Namun, kami dapat merekomendasikan meditasi utama yang cocok untuk anda</string>
+    <string name="meditazone_team">Meditazone Team</string>
+    <string name="recommend_meditation">Rekomendasi meditasi bedasarkan suasana hati anda</string>
+    <string name="recommend_article">Rekomendasi article bedasarkan suasana hati anda</string>
+    <string name="recommend_quote">Rekomendasi quote bedasarkan suasana hati anda</string>
+    <string name="your_feel">Perasaan anda saat ini : </string>
 
     /For Favorite
     <string name="your_favorite">Favorit Kamu</string>
     <string name="favorite_meditation">Meditasi Favorit</string>
     <string name="favorite_quote">Quotes Favorit</string>
     <string name="favorite_artickle">Artikel Favorite</string>
+
+    /logout
+    <string name="logout">Log out</string>
+    <string name="login">Login</string>
 
 </resources>

@@ -60,7 +60,8 @@ fun HomeScreen(
     ),
     navigateToPlayer: (Int) -> Unit,
     navigateToInput: () -> Unit,
-    navigateToQuote: (Int) -> Unit
+    navigateToQuote: (Int) -> Unit,
+    navigateToArticle: (Int) -> Unit
 ) {
 
 
@@ -92,7 +93,8 @@ fun HomeScreen(
                                             showDialog = viewModel.isDialogShown,
                                             onDismissDialog = {viewModel.onDismissDialog()},
                                             listArticle = articleList.data,
-                                            navigateToQuote = navigateToQuote
+                                            navigateToQuote = navigateToQuote,
+                                            navigateToArticleDialog = navigateToArticle
                                         )
                                     }
                                     is UiState.Error -> {
@@ -125,7 +127,8 @@ fun HomeContent(
     showDialog: Boolean,
     onDismissDialog: () -> Unit,
     listArticle: List<ArticleItem>,
-    navigateToQuote: (Int) -> Unit
+    navigateToQuote: (Int) -> Unit,
+    navigateToArticleDialog: (Int) -> Unit
 ) {
     Column(
         modifier = modifier.verticalScroll(rememberScrollState())
@@ -220,7 +223,8 @@ fun HomeContent(
             title = stringResource(id = R.string.title_article),
             content = {
                 ArticleRow(
-                    listMeditation = listArticle
+                    listMeditation = listArticle,
+                    showDialog = navigateToArticleDialog
                 ) },
             modifier = Modifier.padding(start = 8.dp)
         )
@@ -241,7 +245,8 @@ private fun HomeScreenPreview() {
             showDialog = true,
             onDismissDialog = {},
             listArticle = FakeArticleData.articles,
-            navigateToQuote = {}
+            navigateToQuote = {},
+            navigateToArticleDialog = {}
         )
     }
 }

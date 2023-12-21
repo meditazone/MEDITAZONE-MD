@@ -86,10 +86,8 @@ class MeditazoneRepository private constructor(
         }
     }
 
-    suspend fun getRandomQuoteById(): QuoteItem {
+    suspend fun getRandomQuoteById(randomNumber: Int): QuoteItem {
         val response = apiService.getAllQuotes()
-        val range = 60 - 1 + 1
-        val randomNumber = (Math.random() * range).toInt() + 1
 
         Log.d("RANDOM NUMBER", "randomNumber: $randomNumber")
 
@@ -102,6 +100,13 @@ class MeditazoneRepository private constructor(
         val response = apiService.getAllArticle()
 
         return flowOf(response.data)
+    }
+
+    suspend fun getArticleById(articleId: Int): ArticleItem {
+        val response = apiService.getAllArticle()
+        return response.data.first {
+            it.articleID == articleId
+        }
     }
 
     suspend fun getArticleByCategory(category: String): Flow<List<ArticleItem>> {
@@ -139,6 +144,10 @@ class MeditazoneRepository private constructor(
 
     fun getPredictML(): Flow<String> {
         return userPreference.getPredictML()
+    }
+
+    suspend fun clearPredictMl() {
+        userPreference.clearPredictClass()
     }
 
     companion object {

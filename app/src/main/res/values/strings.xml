@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Meditazone</string>
+    <string name="app_name">MeditaZone</string>
 
     <string name="menu_home">Home</string>
     <string name="menu_meditation">Meditation</string>
@@ -58,13 +58,15 @@
     <string name="response_success">Penting untuk diingat bahwa respons terhadap berbagai jenis meditasi dapat bervariasi antar individu.
         Pilihan meditasi yang tepat untuk seseorang dengan masalah ini mungkin tidak sama untuk orang lain.
         Namun, kami dapat merekomendasikan meditasi utama yang cocok untuk anda</string>
-    <string name="meditazone_team">Meditazone Team</string>
+    <string name="meditazone_team">MeditaZone Team</string>
     <string name="recommend_meditation">Rekomendasi meditasi bedasarkan suasana hati anda</string>
     <string name="recommend_article">Rekomendasi article bedasarkan suasana hati anda</string>
     <string name="recommend_quote">Rekomendasi quote bedasarkan suasana hati anda</string>
     <string name="your_feel">Perasaan anda saat ini : </string>
     <string name="meditazone">MEDITAZONE</string>
     <string name="meditazone_moto">Meditation and Relaxation</string>
+    <string name="welcome_text">Selamat Datang</string>
+    <string name="in_meditazone">Di MeditaZone</string>
 
     /For Favorite
     <string name="your_favorite">Favorit Kamu</string>

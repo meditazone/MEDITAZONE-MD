@@ -1,5 +1,6 @@
 package com.waekaizo.meditazone.ui.screen.home
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -16,6 +17,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Scaffold
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -26,9 +29,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -56,6 +61,7 @@ import com.waekaizo.meditazone.ui.components.MeditationRow
 import com.waekaizo.meditazone.ui.components.QuoteItemML
 import com.waekaizo.meditazone.ui.theme.Grey
 import com.waekaizo.meditazone.ui.theme.MeditazoneTheme
+import kotlinx.coroutines.launch
 
 @Composable
 fun HomeScreenWithML(
@@ -170,6 +176,7 @@ fun HomeScreenWithML(
     }
 }
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun HomeContentWithML(
     meditationItem: List<DataItem>,
@@ -187,112 +194,136 @@ fun HomeContentWithML(
     icon: Painter,
     clearPredictButton: () -> Unit
 ) {
-    Column(
-        modifier = modifier.verticalScroll(rememberScrollState())
+    val coroutineScope = rememberCoroutineScope()
+    val scaffoldState = rememberScaffoldState()
+
+    Scaffold(
+        scaffoldState = scaffoldState
     ) {
-        Box {
-            Image(
-                painter = painterResource(id = R.drawable.home_image),
-                contentDescription = stringResource(id = R.string.home_image),
-                contentScale = ContentScale.FillWidth,
-                modifier = Modifier.fillMaxWidth()
-            )
-            Row(
-                modifier = Modifier
-                    .padding(start = 16.dp, top = 24.dp, end = 16.dp)
-                    .fillMaxWidth(),
-            ) {
-                Column(
-                    modifier = Modifier
-                ) {
-                    Text(
-                        text = "Selamat Sore",
-                        style = MaterialTheme.typography.headlineSmall.copy(
-                            fontWeight = FontWeight.Medium
-                        )
-                    )
-                }
-                Spacer(modifier = Modifier.width(100.dp))
+        Column(
+            modifier = modifier.verticalScroll(rememberScrollState())
+        ) {
+            Box {
+                Image(
+                    painter = painterResource(id = R.drawable.home_image),
+                    contentDescription = stringResource(id = R.string.home_image),
+                    contentScale = ContentScale.FillWidth,
+                    modifier = Modifier.fillMaxWidth()
+                )
                 Row(
-                    modifier = Modifier.align(Alignment.CenterVertically)
+                    modifier = Modifier
+                        .padding(start = 16.dp, top = 24.dp, end = 16.dp)
+                        .fillMaxWidth(),
                 ) {
-                    IconButton(
-                        onClick = {  }
+                    Column(
+                        modifier = Modifier
                     ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.icon_search),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .background(color = Grey, shape = CircleShape)
-                                .padding(12.dp)
-                                .size(16.dp)
-                                .align(Alignment.CenterVertically),
+                        Text(
+                            text = stringResource(id = R.string.welcome_text),
+                            style = MaterialTheme.typography.headlineSmall.copy(
+                                fontWeight = FontWeight.Medium
+                            )
+                        )
+                        Text(
+                            text = stringResource(id = R.string.in_meditazone),
+                            style = MaterialTheme.typography.titleMedium.copy(
+                                fontWeight = FontWeight.Medium
+                            )
                         )
                     }
-                    IconButton(
-                        onClick = { /*TODO*/ },
-                        modifier = Modifier.size(50.dp)
+                    Spacer(modifier = Modifier.width(100.dp))
+                    Row(
+                        modifier = Modifier.align(Alignment.CenterVertically)
                     ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.profile_picture),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(50.dp)
-                                .align(Alignment.CenterVertically)
-                        )
+                        IconButton(
+                            onClick = {
+                                coroutineScope.launch {
+                                    scaffoldState.snackbarHostState.showSnackbar("Fitur ini sedang dalam pengembangan untuk meningkatkan pengalaman pengguna. Terima kasih atas kesabaran Anda.")
+                                }
+                            }
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.icon_search),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .background(color = Grey, shape = CircleShape)
+                                    .padding(12.dp)
+                                    .size(16.dp)
+                                    .align(Alignment.CenterVertically),
+                            )
+                        }
+                        IconButton(
+                            onClick = {
+                                coroutineScope.launch {
+                                    scaffoldState.snackbarHostState.showSnackbar("Fitur ini sedang dalam pengembangan untuk meningkatkan pengalaman pengguna. Terima kasih atas kesabaran Anda.")
+                                }
+                            },
+                            modifier = Modifier.size(50.dp)
+                                .clip(shape = CircleShape)
+                        ) {
+                            Image(
+                                painter = painterResource(id = R.drawable.category_bg_loving),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size(40.dp)
+                                    .align(Alignment.CenterVertically)
+                                    .clip(shape = CircleShape)
+                            )
+                        }
                     }
                 }
-            }
-            CardHomeML(
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .offset(y = 100.dp),
-                clearClassPredict = clearPredictButton,
-                icon = icon,
-                classPredict = classPredictCard,
-            )
-        }
-
-        Spacer(modifier = Modifier.height(120.dp))
-
-        CategorySection(
-            text1 = stringResource(id = R.string.title_meditation),
-            text2 = stringResource(id = R.string.recommend_meditation),
-            content = {
-                MeditationRow(
-                    listMeditation = meditationItem,
-                    navigateToPlayer = navigateToPlayer
-                )
-            },
-            modifier = Modifier.padding(start = 8.dp)
-        )
-        CategorySection(
-            text1 = stringResource(id = R.string.quote),
-            text2 = stringResource(id = R.string.recommend_quote),
-            content = {
-                QuoteItemML(
-                    quote = quoteItem.quote,
-                    nameMotivator = quoteItem.author,
-                    backgroundUrl = quoteItem.imageUrl,
+                CardHomeML(
                     modifier = Modifier
-                        .clickable { navigateToQuote(quoteItem.quoteID) },
-                    showDialog = showDialog,
-                    onDismissDialog = onDismissDialog
+                        .align(Alignment.BottomCenter)
+                        .offset(y = 100.dp),
+                    clearClassPredict = clearPredictButton,
+                    icon = icon,
+                    classPredict = classPredictCard,
                 )
-            },
-            modifier = Modifier.padding(start = 8.dp)
-        )
-        CategorySection(
-            text1 = stringResource(id = R.string.title_article),
-            text2 = stringResource(id = R.string.recommend_article),
-            content = {
-                ArticleRow(
-                    listMeditation = listArticle,
-                    showDialog = navigateToArticleDialog
-                ) },
-            modifier = Modifier.padding(start = 8.dp)
-        )
+            }
 
+            Spacer(modifier = Modifier.height(120.dp))
+
+            CategorySection(
+                text1 = stringResource(id = R.string.title_meditation),
+                text2 = stringResource(id = R.string.recommend_meditation),
+                content = {
+                    MeditationRow(
+                        listMeditation = meditationItem,
+                        navigateToPlayer = navigateToPlayer
+                    )
+                },
+                modifier = Modifier.padding(start = 8.dp)
+            )
+            CategorySection(
+                text1 = stringResource(id = R.string.quote),
+                text2 = stringResource(id = R.string.recommend_quote),
+                content = {
+                    QuoteItemML(
+                        quote = quoteItem.quote,
+                        nameMotivator = quoteItem.author,
+                        backgroundUrl = quoteItem.imageUrl,
+                        modifier = Modifier
+                            .clickable { navigateToQuote(quoteItem.quoteID) },
+                        showDialog = showDialog,
+                        onDismissDialog = onDismissDialog
+                    )
+                },
+                modifier = Modifier.padding(start = 8.dp)
+            )
+            CategorySection(
+                text1 = stringResource(id = R.string.title_article),
+                text2 = stringResource(id = R.string.recommend_article),
+                content = {
+                    ArticleRow(
+                        listMeditation = listArticle,
+                        showDialog = navigateToArticleDialog
+                    )
+                },
+                modifier = Modifier.padding(start = 8.dp)
+            )
+
+        }
     }
 }
 

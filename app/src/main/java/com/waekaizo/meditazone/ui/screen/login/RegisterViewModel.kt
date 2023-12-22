@@ -28,7 +28,7 @@ class RegisterViewModel(private val repository: MeditazoneRepository) : ViewMode
                 _registerResult.value = RegistrationResult.Error(response.message)
             }
         } catch (e: HttpException) {
-            _registerResult.value = RegistrationResult.Error("Registration failed : ${e.message} check your password, Password should contains a lowercase, a uppercase character and a digit.")
+            _registerResult.value = RegistrationResult.Error("${e.message} : Password should contains a lowercase, a uppercase character and a digit.")
         } catch (e: Exception) {
             _registerResult.value = RegistrationResult.Error("Registration failed: ${e.message}")
         }

@@ -13,7 +13,6 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -25,8 +24,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.waekaizo.meditazone.R
 import com.waekaizo.meditazone.di.Injection
 import com.waekaizo.meditazone.ui.ViewModelFactory
@@ -36,7 +33,6 @@ import com.waekaizo.meditazone.ui.components.PasswordTextField
 import com.waekaizo.meditazone.ui.components.SectionText2
 import com.waekaizo.meditazone.ui.components.SectionText3
 import com.waekaizo.meditazone.ui.components.TextFieldMeditazone
-import com.waekaizo.meditazone.ui.navigation.Screen
 import com.waekaizo.meditazone.ui.theme.MeditazoneTheme
 import kotlinx.coroutines.launch
 

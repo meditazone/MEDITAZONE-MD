@@ -1,5 +1,6 @@
 package com.waekaizo.meditazone.ui.components
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -15,10 +16,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -27,6 +30,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -48,7 +52,9 @@ import com.waekaizo.meditazone.ui.theme.Grey_Card2
 import com.waekaizo.meditazone.ui.theme.MeditazoneTheme
 import com.waekaizo.meditazone.ui.theme.prozaLibreFontFamily
 import com.waekaizo.meditazone.ui.theme.robotoFontFamily
+import kotlinx.coroutines.launch
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun QuoteDialog(
     quote: String,
@@ -57,150 +63,165 @@ fun QuoteDialog(
     modifier: Modifier = Modifier,
     onDismiss: () -> Unit
 ) {
-    Dialog(
-        onDismissRequest = {
-            onDismiss()
-        },
-        properties = DialogProperties(
-            usePlatformDefaultWidth = false
-        )
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(color = Color.Black.copy(alpha = 0.8F))
-                .padding(end = 24.dp)
-        ) {
-            IconButton(
-                onClick = {onDismiss()},
-                modifier = Modifier.padding(16.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Close,
-                    contentDescription = null,
-                    tint = Color.White,
-                    modifier = Modifier
-                        .background(color = Color.Black, shape = CircleShape)
-                        .padding(8.dp)
-                )
-            }
-            Spacer(modifier = Modifier.height(100.dp))
-            Box(
-                contentAlignment = Alignment.BottomEnd,
-                modifier = Modifier
-            ) {
-                Card(
-                    modifier = modifier
-                        .size(width = 353.dp, height = 486.dp)
-                        .padding(8.dp),
-                    shape = RoundedCornerShape(60.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = Color.White
-                    ),
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.background_quote),
-                            contentDescription = null,
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier
-                                .matchParentSize()
-                        )
+    val scaffoldState = rememberScaffoldState()
+    val coroutineScope = rememberCoroutineScope()
 
-                        Column(
+    Scaffold(
+        scaffoldState = scaffoldState
+    ) {
+        Dialog(
+            onDismissRequest = {
+                onDismiss()
+            },
+            properties = DialogProperties(
+                usePlatformDefaultWidth = false
+            )
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(color = Color.Black.copy(alpha = 0.8F))
+                    .padding(end = 24.dp)
+            ) {
+                IconButton(
+                    onClick = { onDismiss() },
+                    modifier = Modifier.padding(16.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Close,
+                        contentDescription = null,
+                        tint = Color.White,
+                        modifier = Modifier
+                            .background(color = Color.Black, shape = CircleShape)
+                            .padding(8.dp)
+                    )
+                }
+                Spacer(modifier = Modifier.height(100.dp))
+                Box(
+                    contentAlignment = Alignment.BottomEnd,
+                    modifier = Modifier
+                ) {
+                    Card(
+                        modifier = modifier
+                            .size(width = 353.dp, height = 486.dp)
+                            .padding(8.dp),
+                        shape = RoundedCornerShape(60.dp),
+                        colors = CardDefaults.cardColors(
+                            containerColor = Color.White
+                        ),
+                    ) {
+                        Box(
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .align(alignment = Alignment.Center)
-                                .padding(bottom = 32.dp, start = 24.dp, end = 24.dp)
+                                .fillMaxSize(),
+                            contentAlignment = Alignment.Center
                         ) {
-                            Text(
-                                text = quote,
-                                fontWeight = FontWeight.Medium,
-                                fontSize = 20.sp,
-                                color = Color.White,
+                            Image(
+                                painter = painterResource(id = R.drawable.background_quote),
+                                contentDescription = null,
+                                contentScale = ContentScale.Crop,
                                 modifier = Modifier
-                                    .padding(vertical = 8.dp),
-                                textAlign = TextAlign.Start
+                                    .matchParentSize()
                             )
-                            Row {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.icon_line),
-                                    contentDescription = null,
-                                    tint = Color.White,
-                                    modifier = Modifier
-                                        .size(60.dp)
-                                        .align(Alignment.CenterVertically)
-                                )
+
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .align(alignment = Alignment.Center)
+                                    .padding(bottom = 32.dp, start = 24.dp, end = 24.dp)
+                            ) {
                                 Text(
-                                    text = nameMotivator,
+                                    text = quote,
                                     fontWeight = FontWeight.Medium,
                                     fontSize = 20.sp,
                                     color = Color.White,
                                     modifier = Modifier
-                                        .padding(
-                                            top = 8.dp,
-                                            bottom = 8.dp,
-                                            end = 8.dp,
-                                            start = 4.dp
-                                        )
-                                        .align(Alignment.CenterVertically),
+                                        .padding(vertical = 8.dp),
                                     textAlign = TextAlign.Start
                                 )
+                                Row {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.icon_line),
+                                        contentDescription = null,
+                                        tint = Color.White,
+                                        modifier = Modifier
+                                            .size(60.dp)
+                                            .align(Alignment.CenterVertically)
+                                    )
+                                    Text(
+                                        text = nameMotivator,
+                                        fontWeight = FontWeight.Medium,
+                                        fontSize = 20.sp,
+                                        color = Color.White,
+                                        modifier = Modifier
+                                            .padding(
+                                                top = 8.dp,
+                                                bottom = 8.dp,
+                                                end = 8.dp,
+                                                start = 4.dp
+                                            )
+                                            .align(Alignment.CenterVertically),
+                                        textAlign = TextAlign.Start
+                                    )
+                                }
                             }
                         }
                     }
-                }
-                Row(
-                    verticalAlignment = Alignment.Bottom,
-                    horizontalArrangement = Arrangement.End,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                ) {
-                    IconButton(
-                        onClick = { /*TODO*/ },
+                    Row(
+                        verticalAlignment = Alignment.Bottom,
+                        horizontalArrangement = Arrangement.End,
                         modifier = Modifier
-                            .padding(end = 16.dp)
-                            .offset(y = 10.dp)
-                            .size(70.dp)
-                            .shadow(elevation = 10.dp, shape = CircleShape)
+                            .fillMaxWidth()
                     ) {
-                        Icon(
-                            imageVector = Icons.Default.FavoriteBorder,
-                            contentDescription = null,
-                            tint = Color.White,
+                        IconButton(
+                            onClick = {
+                                coroutineScope.launch {
+                                    scaffoldState.snackbarHostState.showSnackbar("Fitur ini sedang dalam pengembangan untuk meningkatkan pengalaman pengguna. Terima kasih atas kesabaran Anda.")
+                                }
+                            },
                             modifier = Modifier
-                                .size(100.dp)
-                                .background(
-                                    color = MaterialTheme.colorScheme.primary,
-                                    shape = CircleShape
-                                )
-                                .padding(20.dp)
-                        )
-                    }
-                    IconButton(
-                        onClick = { /*TODO*/ },
-                        modifier = Modifier
-                            .padding(end = 32.dp)
-                            .offset(y = 10.dp)
-                            .size(70.dp)
-                            .shadow(elevation = 10.dp, shape = CircleShape)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Share,
-                            contentDescription = null,
-                            tint = Color.White,
+                                .padding(end = 16.dp)
+                                .offset(y = 10.dp)
+                                .size(70.dp)
+                                .shadow(elevation = 10.dp, shape = CircleShape)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.FavoriteBorder,
+                                contentDescription = null,
+                                tint = Color.White,
+                                modifier = Modifier
+                                    .size(100.dp)
+                                    .background(
+                                        color = MaterialTheme.colorScheme.primary,
+                                        shape = CircleShape
+                                    )
+                                    .padding(20.dp)
+                            )
+                        }
+                        IconButton(
+                            onClick = {
+                                coroutineScope.launch {
+                                    scaffoldState.snackbarHostState.showSnackbar("Fitur ini sedang dalam pengembangan untuk meningkatkan pengalaman pengguna. Terima kasih atas kesabaran Anda.")
+                                }
+                            },
                             modifier = Modifier
-                                .size(100.dp)
-                                .background(
-                                    color = MaterialTheme.colorScheme.primary,
-                                    shape = CircleShape
-                                )
-                                .padding(20.dp)
-                        )
+                                .padding(end = 32.dp)
+                                .offset(y = 10.dp)
+                                .size(70.dp)
+                                .shadow(elevation = 10.dp, shape = CircleShape)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Share,
+                                contentDescription = null,
+                                tint = Color.White,
+                                modifier = Modifier
+                                    .size(100.dp)
+                                    .background(
+                                        color = MaterialTheme.colorScheme.primary,
+                                        shape = CircleShape
+                                    )
+                                    .padding(20.dp)
+                            )
+                        }
                     }
                 }
             }

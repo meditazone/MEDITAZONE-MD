@@ -1,5 +1,6 @@
 package com.waekaizo.meditazone.ui.screen.home
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -15,14 +16,18 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Scaffold
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -51,6 +56,7 @@ import com.waekaizo.meditazone.ui.components.QuoteRow
 import com.waekaizo.meditazone.ui.components.QuoteSection
 import com.waekaizo.meditazone.ui.theme.Grey
 import com.waekaizo.meditazone.ui.theme.MeditazoneTheme
+import kotlinx.coroutines.launch
 
 @Composable
 fun HomeScreen(
@@ -115,6 +121,7 @@ fun HomeScreen(
     }
 }
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun HomeContent(
     meditationItem: List<DataItem>,
@@ -129,105 +136,130 @@ fun HomeContent(
     navigateToQuote: (Int) -> Unit,
     navigateToArticleDialog: (Int) -> Unit
 ) {
-    Column(
-        modifier = modifier.verticalScroll(rememberScrollState())
+    val scaffoldState = rememberScaffoldState()
+    val coroutineScope = rememberCoroutineScope()
+
+    Scaffold(
+        scaffoldState = scaffoldState
     ) {
-        Box {
-            Image(
-                painter = painterResource(id = R.drawable.home_image),
-                contentDescription = stringResource(id = R.string.home_image),
-                contentScale = ContentScale.FillWidth,
-                modifier = Modifier.fillMaxWidth()
-            )
-            Row(
-                modifier = Modifier
-                    .padding(start = 16.dp, top = 24.dp, end = 16.dp)
-                    .fillMaxWidth(),
-            ) {
-                Column(
-                    modifier = Modifier
-                ) {
-                    Text(
-                        text = "Selamat Sore",
-                        style = MaterialTheme.typography.headlineSmall.copy(
-                            fontWeight = FontWeight.Medium
-                        )
-                    )
-                }
-                Spacer(modifier = Modifier.width(100.dp))
+        Column(
+            modifier = modifier.verticalScroll(rememberScrollState())
+        ) {
+            Box {
+                Image(
+                    painter = painterResource(id = R.drawable.home_image),
+                    contentDescription = stringResource(id = R.string.home_image),
+                    contentScale = ContentScale.FillWidth,
+                    modifier = Modifier.fillMaxWidth()
+                )
                 Row(
-                    modifier = Modifier.align(Alignment.CenterVertically)
+                    modifier = Modifier
+                        .padding(start = 16.dp, top = 24.dp, end = 16.dp)
+                        .fillMaxWidth(),
                 ) {
-                    IconButton(
-                        onClick = {  }
+                    Column(
+                        modifier = Modifier
                     ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.icon_search),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .background(color = Grey, shape = CircleShape)
-                                .padding(12.dp)
-                                .size(16.dp)
-                                .align(Alignment.CenterVertically),
+                        Text(
+                            text = stringResource(id = R.string.welcome_text),
+                            style = MaterialTheme.typography.headlineSmall.copy(
+                                fontWeight = FontWeight.Medium
+                            )
+                        )
+                        Text(
+                            text = stringResource(id = R.string.in_meditazone),
+                            style = MaterialTheme.typography.titleMedium.copy(
+                                fontWeight = FontWeight.Medium
+                            )
                         )
                     }
-                    IconButton(
-                        onClick = { /*TODO*/ },
-                        modifier = Modifier.size(50.dp)
+                    Spacer(modifier = Modifier.width(100.dp))
+                    Row(
+                        modifier = Modifier.align(Alignment.CenterVertically)
                     ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.profile_picture),
-                            contentDescription = null,
+                        IconButton(
+                            onClick = {
+                                coroutineScope.launch {
+                                    scaffoldState.snackbarHostState.showSnackbar("Fitur ini sedang dalam pengembangan untuk meningkatkan pengalaman pengguna. Terima kasih atas kesabaran Anda.")
+                                }
+                            }
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.icon_search),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .background(color = Grey, shape = CircleShape)
+                                    .padding(12.dp)
+                                    .size(16.dp)
+                                    .align(Alignment.CenterVertically),
+                            )
+                        }
+                        IconButton(
+                            onClick = {
+                                coroutineScope.launch {
+                                    scaffoldState.snackbarHostState.showSnackbar("Fitur ini sedang dalam pengembangan untuk meningkatkan pengalaman pengguna. Terima kasih atas kesabaran Anda.")
+                                }
+                            },
                             modifier = Modifier
                                 .size(50.dp)
-                                .align(Alignment.CenterVertically)
-                        )
+                                .clip(CircleShape)
+                        ) {
+                            Image(
+                                painter = painterResource(id = R.drawable.category_bg_loving),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size(40.dp)
+                                    .align(Alignment.CenterVertically)
+                                    .clip(shape = CircleShape)
+                            )
+                        }
                     }
                 }
+                CardHome(
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .offset(y = 100.dp),
+                    navigateToInput = navigateToInput
+                )
             }
-            CardHome(
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .offset(y = 100.dp),
-                navigateToInput = navigateToInput
+
+            Spacer(modifier = Modifier.height(120.dp))
+
+            HomeSection(
+                title = stringResource(id = R.string.title_meditation),
+                content = {
+                    MeditationRow(
+                        listMeditation = meditationItem,
+                        navigateToPlayer = navigateToPlayer
+                    )
+                },
+                modifier = Modifier.padding(start = 8.dp)
             )
+            QuoteSection(
+                title = stringResource(id = R.string.quote),
+                content = {
+                    QuoteRow(
+                        listQuote = quoteItem,
+                        onQuoteClick = onQuoteClick,
+                        showDialog = showDialog,
+                        onDismissDialog = onDismissDialog,
+                        navigateToQuote = navigateToQuote
+                    )
+                },
+                modifier = Modifier.padding(start = 8.dp)
+            )
+            ArticleSection(
+                title = stringResource(id = R.string.title_article),
+                content = {
+                    ArticleRow(
+                        listMeditation = listArticle,
+                        showDialog = navigateToArticleDialog
+                    )
+                },
+                modifier = Modifier.padding(start = 8.dp)
+            )
+
         }
-
-        Spacer(modifier = Modifier.height(120.dp))
-
-        HomeSection(
-            title = stringResource(id = R.string.title_meditation),
-            content = {
-                MeditationRow(
-                    listMeditation = meditationItem,
-                    navigateToPlayer = navigateToPlayer
-                )
-                      },
-            modifier = Modifier.padding(start = 8.dp)
-        )
-        QuoteSection(
-            title = stringResource(id = R.string.quote),
-            content = {
-                QuoteRow(
-                    listQuote = quoteItem,
-                    onQuoteClick = onQuoteClick,
-                    showDialog = showDialog,
-                    onDismissDialog = onDismissDialog,
-                    navigateToQuote = navigateToQuote
-                )
-                      },
-            modifier = Modifier.padding(start = 8.dp)
-        )
-        ArticleSection(
-            title = stringResource(id = R.string.title_article),
-            content = {
-                ArticleRow(
-                    listMeditation = listArticle,
-                    showDialog = navigateToArticleDialog
-                ) },
-            modifier = Modifier.padding(start = 8.dp)
-        )
-
     }
 }
 

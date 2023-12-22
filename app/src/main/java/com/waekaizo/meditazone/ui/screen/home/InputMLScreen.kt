@@ -1,6 +1,8 @@
 package com.waekaizo.meditazone.ui.screen.home
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -9,8 +11,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -39,6 +43,7 @@ import com.waekaizo.meditazone.ui.theme.MeditazoneTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun InputMLScreen(
     navigateBack: () -> Unit,
@@ -49,42 +54,52 @@ fun InputMLScreen(
 ) {
     var text by remember { mutableStateOf("") }
     val coroutineScope = rememberCoroutineScope()
+    val scaffoldState = rememberScaffoldState()
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-            .verticalScroll(rememberScrollState())
+    Scaffold(
+        scaffoldState = scaffoldState
     ) {
-        InputMLContent(
-            navigateBack = navigateBack
-        )
-        OutlinedTextField(
-            value = text,
-            onValueChange = {text = it},
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(450.dp)
-                .padding(vertical = 16.dp),
-            label = {
-                Text(text = stringResource(id = R.string.ask_emotion))
-            },
-            shape = RoundedCornerShape(16.dp),
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedTextColor = Color.Black,
-                unfocusedTextColor = Color.Black
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState())
+        ) {
+            InputMLContent(
+                navigateBack = navigateBack
             )
-        )
-        ButtonGradient(
-            textButton = stringResource(id = R.string.next),
-            onClick = {
-                coroutineScope.launch {
-                    viewModel.sendInputML(text)
-                    delay(5000)
-                    navigateToSuccessDialog()
+            OutlinedTextField(
+                value = text,
+                onValueChange = { text = it },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(450.dp)
+                    .padding(vertical = 16.dp),
+                label = {
+                    Text(text = stringResource(id = R.string.ask_emotion))
+                },
+                shape = RoundedCornerShape(16.dp),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = Color.Black,
+                    unfocusedTextColor = Color.Black
+                )
+            )
+            ButtonGradient(
+                textButton = stringResource(id = R.string.next),
+                onClick = {
+                    coroutineScope.launch {
+                        if (text != "") {
+                            viewModel.sendInputML(text)
+                            scaffoldState.snackbarHostState.showSnackbar("Input Sedang Diproses")
+                            delay(5000)
+                            navigateToSuccessDialog()
+                        } else {
+                            scaffoldState.snackbarHostState.showSnackbar("Input tidak boleh kosong")
+                        }
+                    }
                 }
-            }
-        )
+            )
+        }
     }
 }
 

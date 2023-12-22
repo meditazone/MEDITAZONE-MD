@@ -223,9 +223,7 @@ fun MeditazoneApp(
                 ShowSuccessDialog(
                     navigateBack = {
                         navController.navigate(Screen.Home.route) {
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
-                            }
+                            popUpTo(navController.graph.findStartDestination().id)
                             restoreState = true
                             launchSingleTop = true
                         }

@@ -1,9 +1,11 @@
 package com.waekaizo.meditazone.ui.screen.player
 
+import android.annotation.SuppressLint
 import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,9 +15,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -94,6 +100,7 @@ fun PlayerScreen(
     }
 }
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun PlayerContent(
     title: String,
@@ -110,150 +117,194 @@ fun PlayerContent(
         mutableStateOf(true)
     }
     val currentMinutes = viewModel.currentMinutes.observeAsState()
+    val scaffoldState = rememberScaffoldState()
 
-    Box(
-        modifier = modifier
-            .fillMaxSize()
+    Scaffold(
+        scaffoldState = scaffoldState
     ) {
-        AsyncImage(
-            model = backgroundImg,
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
+        Box(
+            modifier = modifier
                 .fillMaxSize()
-        )
-        TopBarCategory(
-            modifier = Modifier.padding(top = 16.dp),
-            onBackClick = onBackClick
-        )
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.BottomStart)
-                .padding(16.dp)
         ) {
-            Text(
-                text = title,
-                color = Color.White,
-                style = MaterialTheme.typography.headlineSmall,
+            AsyncImage(
+                model = backgroundImg,
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .padding(vertical = 24.dp)
-            )
-            Text(
-                text = category,
-                color = Color.Gray,
-                style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier
-                    .padding(bottom = 24.dp)
-            )
-            Slider(
-                value = currentMinutes.value!!.toFloat(),
-                onValueChange = {},
-                valueRange = 0f..mediaPlayer.duration.toFloat(),
-                colors = SliderDefaults.colors(
-                    thumbColor = Color.White,
-                    activeTrackColor = Color.White
-                )
+                    .fillMaxSize()
             )
             Row(
-                modifier = Modifier.fillMaxWidth()
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+                    .background(Color.Transparent),
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(
-                    text = "${currentMinutes.value!!} s",
-                    color = Color.White
-                )
-                Log.d("CURRENT MINUTE", "currentMinute : ${currentMinutes.value!!}")
-                Spacer(modifier = Modifier.weight(1f))
-                Text(
-                    text = "${mediaPlayer.duration}",
-                    color = Color.White
-                )
-            }
-
-            Row(
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .padding(bottom = 40.dp)
-            ) {
-                IconButton(
-                    onClick = { /*TODO*/ },
-                    modifier = Modifier
-                        .size(40.dp)
-                        .align(Alignment.CenterVertically)
-                        .shadow(elevation = 10.dp, shape = CircleShape)
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.icon_tenleft),
-                        contentDescription = null,
-                        tint = Color.White,
-                        modifier = Modifier
-                            .size(100.dp)
-                            .background(
-                                color = MaterialTheme.colorScheme.primary,
-                                shape = CircleShape
-                            )
-                            .padding(8.dp)
-                    )
-                }
                 IconButton(
                     onClick = {
-                        if (audioFlag.value) {
-                            mediaPlayer.start()
-                            scope.launch {
-                                delay(500)
-                                viewModel.getMediaDuration(mediaPlayer = mediaPlayer)
-                            }
-                            audioFlag.value = false
-                        } else {
-                            audioFlag.value = true
-                            mediaPlayer.pause()
-                        }},
-                    modifier = Modifier
-                        .padding(horizontal = 40.dp)
-                        .size(50.dp)
-                        .shadow(elevation = 10.dp, shape = CircleShape)
+                        mediaPlayer.release()
+                        onBackClick()
+                    }
                 ) {
                     Icon(
-                        imageVector =
-                        if (audioFinish.value == false) {
-                            if (audioFlag.value) {
-                                Icons.Default.PlayArrow
-                            } else {
-                                Icons.Default.Pause
-                            }
-                        } else {
-                            Icons.Default.PlayArrow
-                        },
+                        imageVector = Icons.Default.KeyboardArrowLeft,
                         contentDescription = null,
                         tint = Color.White,
                         modifier = Modifier
-                            .size(100.dp)
-                            .background(
-                                color = MaterialTheme.colorScheme.primary,
-                                shape = CircleShape
-                            )
+                            .background(color = Color.Black, shape = CircleShape)
                             .padding(8.dp)
                     )
                 }
-                IconButton(
-                    onClick = { /*TODO*/ },
-                    modifier = Modifier
-                        .size(40.dp)
-                        .align(Alignment.CenterVertically)
-                        .shadow(elevation = 10.dp, shape = CircleShape)
-                ) {
+
+                IconButton(onClick = {}) {
                     Icon(
-                        painter = painterResource(id = R.drawable.icon_tenright),
+                        imageVector = Icons.Default.MoreVert,
                         contentDescription = null,
                         tint = Color.White,
                         modifier = Modifier
-                            .size(100.dp)
-                            .background(
-                                color = MaterialTheme.colorScheme.primary,
-                                shape = CircleShape
-                            )
+                            .background(color = Color.Black, shape = CircleShape)
                             .padding(8.dp)
                     )
+                }
+            }
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.BottomStart)
+                    .padding(16.dp)
+            ) {
+                Text(
+                    text = title,
+                    color = Color.White,
+                    style = MaterialTheme.typography.headlineSmall,
+                    modifier = Modifier
+                        .padding(vertical = 24.dp)
+                )
+                Text(
+                    text = category,
+                    color = Color.Gray,
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier
+                        .padding(bottom = 24.dp)
+                )
+                /*Slider(
+                    value = currentMinutes.value!!.toFloat(),
+                    onValueChange = {},
+                    valueRange = 0f..mediaPlayer.duration.toFloat(),
+                    colors = SliderDefaults.colors(
+                        thumbColor = Color.White,
+                        activeTrackColor = Color.White
+                    )
+                )*/
+                /*Row(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = "${currentMinutes.value!!} s",
+                        color = Color.White
+                    )
+                    Log.d("CURRENT MINUTE", "currentMinute : ${currentMinutes.value!!}")
+                    Spacer(modifier = Modifier.weight(1f))
+                    Text(
+                        text = "${mediaPlayer.duration}",
+                        color = Color.White
+                    )
+                }*/
+
+                Row(
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .padding(bottom = 40.dp)
+                ) {
+                    IconButton(
+                        onClick = {
+                            scope.launch {
+                                scaffoldState.snackbarHostState.showSnackbar("Fitur ini sedang dalam pengembangan untuk meningkatkan pengalaman pengguna. Terima kasih atas kesabaran Anda.")
+                            }
+                        },
+                        modifier = Modifier
+                            .size(40.dp)
+                            .align(Alignment.CenterVertically)
+                            .shadow(elevation = 10.dp, shape = CircleShape)
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.icon_tenleft),
+                            contentDescription = null,
+                            tint = Color.White,
+                            modifier = Modifier
+                                .size(100.dp)
+                                .background(
+                                    color = MaterialTheme.colorScheme.primary,
+                                    shape = CircleShape
+                                )
+                                .padding(8.dp)
+                        )
+                    }
+                    IconButton(
+                        onClick = {
+                            if (audioFlag.value) {
+                                mediaPlayer.start()
+                                scope.launch {
+                                    delay(500)
+                                    viewModel.getMediaDuration(mediaPlayer = mediaPlayer)
+                                }
+                                audioFlag.value = false
+                            } else {
+                                audioFlag.value = true
+                                mediaPlayer.pause()
+                            }
+                        },
+                        modifier = Modifier
+                            .padding(horizontal = 40.dp)
+                            .size(50.dp)
+                            .shadow(elevation = 10.dp, shape = CircleShape)
+                    ) {
+                        Icon(
+                            imageVector =
+                            if (audioFinish.value == false) {
+                                if (audioFlag.value) {
+                                    Icons.Default.PlayArrow
+                                } else {
+                                    Icons.Default.Pause
+                                }
+                            } else {
+                                Icons.Default.PlayArrow
+                            },
+                            contentDescription = null,
+                            tint = Color.White,
+                            modifier = Modifier
+                                .size(100.dp)
+                                .background(
+                                    color = MaterialTheme.colorScheme.primary,
+                                    shape = CircleShape
+                                )
+                                .padding(8.dp)
+                        )
+                    }
+                    IconButton(
+                        onClick = {
+                            scope.launch {
+                                scaffoldState.snackbarHostState.showSnackbar("Fitur ini sedang dalam pengembangan untuk meningkatkan pengalaman pengguna. Terima kasih atas kesabaran Anda.")
+                            }
+                        },
+                        modifier = Modifier
+                            .size(40.dp)
+                            .align(Alignment.CenterVertically)
+                            .shadow(elevation = 10.dp, shape = CircleShape)
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.icon_tenright),
+                            contentDescription = null,
+                            tint = Color.White,
+                            modifier = Modifier
+                                .size(100.dp)
+                                .background(
+                                    color = MaterialTheme.colorScheme.primary,
+                                    shape = CircleShape
+                                )
+                                .padding(8.dp)
+                        )
+                    }
                 }
             }
         }

@@ -6,6 +6,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -17,6 +18,7 @@ import com.waekaizo.meditazone.ui.navigation.Screen
 @Composable
 fun BottomBar(
     navController: NavHostController,
+    currentRoute: String?,
     modifier: Modifier = Modifier
 ) {
     NavigationBar(
@@ -41,7 +43,7 @@ fun BottomBar(
         )
         navigationItems.map { item ->
             NavigationBarItem(
-                selected = false,
+                selected = currentRoute == item.screen.route,
                 onClick = {
                           navController.navigate(item.screen.route) {
                               popUpTo(navController.graph.findStartDestination().id) {
@@ -54,7 +56,7 @@ fun BottomBar(
                 icon = {
                     Icon(
                         painter = item.icon,
-                        contentDescription = item.title
+                        contentDescription = item.title,
                     )
                 },
                 label = { Text(text = item.title)},

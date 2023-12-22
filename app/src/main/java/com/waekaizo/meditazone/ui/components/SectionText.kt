@@ -71,7 +71,8 @@ fun SectionText2(
 fun SectionText3(
     title1: String,
     title2: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navigateToLogin: () -> Unit
 ) {
     Box(
         modifier = modifier
@@ -93,7 +94,7 @@ fun SectionText3(
             )
             Spacer(modifier = Modifier.width(8.dp))
             TextButton(
-                onClick = { /*TODO*/ },
+                onClick = { navigateToLogin() },
                 colors = ButtonDefaults.textButtonColors(
                     contentColor = Color.Black
                 )
@@ -155,7 +156,7 @@ fun SectionText2Preview() {
 @Composable
 fun SectionText3Preview() {
     MeditazoneTheme {
-        SectionText3(title1 = "Belum punya akun?", title2 = "Daftar")
+        SectionText3(title1 = "Belum punya akun?", title2 = "Daftar", navigateToLogin = {})
     }
 }
 

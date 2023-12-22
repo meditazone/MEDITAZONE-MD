@@ -19,19 +19,27 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.waekaizo.meditazone.R
+import com.waekaizo.meditazone.model.CategoryMeditationData
 import com.waekaizo.meditazone.model.FakeMeditationData
 import com.waekaizo.meditazone.ui.components.CardMeditation
+import com.waekaizo.meditazone.ui.components.CategoryRow
 import com.waekaizo.meditazone.ui.components.CategorySection
 import com.waekaizo.meditazone.ui.components.MeditationRow
 import com.waekaizo.meditazone.ui.theme.MeditazoneTheme
 
 @Composable
-fun MeditationScreen() {
-    MeditationContent()
+fun MeditationScreen(
+    navigateToCategory: (Long) -> Unit
+) {
+    MeditationContent(
+        navigateToCategory = navigateToCategory
+    )
 }
 
 @Composable
-fun MeditationContent() {
+fun MeditationContent(
+    navigateToCategory: (Long) -> Unit
+) {
     Column(
         modifier = Modifier.verticalScroll(rememberScrollState())
     ) {
@@ -55,7 +63,10 @@ fun MeditationContent() {
         CategorySection(
             text1 = stringResource(id = R.string.category),
             text2 = stringResource(id = R.string.recomend_text),
-            content = { MeditationRow(listMeditation = FakeMeditationData.meditations) },
+            content = { CategoryRow(
+                listCategory = CategoryMeditationData.categoryMeditation,
+                navigateToCategory = navigateToCategory
+            ) },
             modifier = Modifier.padding(start = 8.dp)
         )
     }
@@ -65,7 +76,9 @@ fun MeditationContent() {
 @Composable
 fun MeditationScreenPreview() {
     MeditazoneTheme {
-        MeditationScreen()
+        MeditationScreen(
+            navigateToCategory = {}
+        )
     }
 }
 

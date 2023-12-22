@@ -1,10 +1,8 @@
 package com.waekaizo.meditazone.ui.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -12,30 +10,31 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.waekaizo.meditazone.R
-import com.waekaizo.meditazone.ui.theme.Grey
 import com.waekaizo.meditazone.ui.theme.Grey_Card2
 import com.waekaizo.meditazone.ui.theme.MeditazoneTheme
 
 @Composable
-fun ArticleItem(
+fun ArticleItems(
+    articleId: Int,
     title: String,
-    type: String,
-    duration: String,
+    thumbnail: String,
+    author: String,
+    category: String,
+    articleUrl: String,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -53,8 +52,8 @@ fun ArticleItem(
             contentAlignment = Alignment.Center
         ) {
             //Need to change to AsyncImage if already create
-            Image(
-                painter = painterResource(id = R.drawable.image_article_sample),
+            AsyncImage(
+                model = thumbnail,
                 contentDescription = stringResource(id = R.string.meditation_image),
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -68,27 +67,19 @@ fun ArticleItem(
             ) {
                 Text(
                     text = title,
-                    modifier = Modifier.padding(16.dp)
+                    modifier = Modifier.padding(16.dp),
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
                 )
-                Row(
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.icon_watch),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .padding(start = 16.dp, bottom = 16.dp)
-                            .size(15.dp),
-                    )
-                    Text(
-                        text = duration,
-                        maxLines = 2,
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Medium,
-                        modifier = Modifier
-                            .padding(start = 4.dp)
-                    )
-                }
+                Text(
+                    text = author,
+                    maxLines = 1,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Medium,
+                    modifier = Modifier
+                        .padding(16.dp),
+                    overflow = TextOverflow.Ellipsis
+                )
             }
         }
     }
@@ -98,10 +89,13 @@ fun ArticleItem(
 @Composable
 fun ArticleItemPreview() {
     MeditazoneTheme {
-        ArticleItem(
+        ArticleItems(
+            articleId = 1,
             title = "Apa Itu Meditasi ?",
-            type = "Article",
-            duration = "15 Minute",
+            author = "",
+            category = "",
+            thumbnail = "",
+            articleUrl = ""
         )
     }
 }

@@ -25,6 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.waekaizo.meditazone.R
 import com.waekaizo.meditazone.ui.theme.Grey
 import com.waekaizo.meditazone.ui.theme.MeditazoneTheme
@@ -34,6 +35,7 @@ fun MeditationItem(
     title: String,
     type: String,
     duration: String,
+    backgroundCard: String,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -51,8 +53,8 @@ fun MeditationItem(
             contentAlignment = Alignment.Center
         ) {
             //Need to change to AsyncImage if already create
-            Image(
-                painter = painterResource(id = R.drawable.meditation_image_bg),
+            AsyncImage(
+                model = backgroundCard,
                 contentDescription = stringResource(id = R.string.meditation_image),
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -113,6 +115,7 @@ fun MeditationItemPreview() {
             title = "Seventeen",
             type = "Meditation",
             duration = "15 Minute",
+            backgroundCard = ""
         )
     }
 }
